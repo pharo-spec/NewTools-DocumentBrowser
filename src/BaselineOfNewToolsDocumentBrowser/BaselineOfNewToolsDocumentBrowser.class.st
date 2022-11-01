@@ -15,13 +15,13 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 			package: #'Microdown-RichTextPresenter-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
 				
-			package: #'Microdown-DocumentBrowser'
+			package: #'NewTools-DocumentBrowser'
 				with: [ spec requires: #( #'Microdown-RichTextPresenter') ];
-			package: #'Microdown-DocumentBrowser-Tests'
+			package: #'NewTools-DocumentBrowser-Tests'
 				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ].
 				
 		spec
-			group: 'Core' with: #('#Microdown-RichTextPresenter' #'Microdown-DocumentBrowser');
-			group: 'Tests' with: #('Core' #'Microdown-RichTextPresenter-Tests' #'Microdown-DocumentBrowser-Tests' );
+			group: 'Core' with: #('#Microdown-RichTextPresenter' #'NewTools-DocumentBrowser');
+			group: 'Tests' with: #('Core' #'Microdown-RichTextPresenter-Tests' #'NewTools-DocumentBrowser-Tests' );
 			group: 'All' with: #('Core' 'Tests' ) ]
 ]
