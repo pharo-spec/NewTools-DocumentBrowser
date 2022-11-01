@@ -16,7 +16,7 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
 				
 			package: #'Microdown-DocumentBrowser'
-				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
+				with: [ spec requires: #( #'Microdown-RichTextPresenter') ];
 			package: #'Microdown-DocumentBrowser-Tests'
 				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ].
 				
