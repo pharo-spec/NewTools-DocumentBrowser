@@ -21,7 +21,7 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ].
 				
 		spec
-			group: 'Core' with: #('#Microdown-RichTextPresenter' #'NewTools-DocumentBrowser');
+			group: 'Core' with: #(#'Microdown-RichTextPresenter' #'NewTools-DocumentBrowser');
 			group: 'Tests' with: #('Core' #'Microdown-RichTextPresenter-Tests' #'NewTools-DocumentBrowser-Tests' );
 			group: 'All' with: #('Core' 'Tests' ) ]
 ]
