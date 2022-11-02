@@ -13,8 +13,3 @@ Class {
 	#superclass : #PackageManifest,
 	#category : #'NewTools-DocumentBrowser-Manifest'
 }
-
-{ #category : #'code-critics' }
-ManifestNewToolsDocumentBrowser class >> ruleBadMessageRule2V1FalsePositive [
-	^ #(#(#(#RGPackageDefinition #(#'Microdown-DocumentBrowser')) #'2022-07-13T10:42:18.082534+02:00') )
-]
