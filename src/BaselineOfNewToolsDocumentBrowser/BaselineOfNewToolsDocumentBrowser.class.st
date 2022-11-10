@@ -7,11 +7,19 @@ Class {
 { #category : #baselines }
 BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 	<baseline>
-	spec for: #common do: [
-		
+	
+	spec for: #'common' do: [
+		spec
+			baseline: 'Microdown'
+			with: [
+				spec
+					repository: 'github://pillar-markup/Microdown:dev/src';
+					loads: #('RichText') ].
+
+
 		spec
 			package: #'Microdown-RichTextPresenter'
-				"with: [ spec requires: #( #Microdown ) ]";
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextPresenter-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
 				
@@ -23,5 +31,6 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 		spec
 			group: 'Core' with: #(#'Microdown-RichTextPresenter' #'NewTools-DocumentBrowser');
 			group: 'Tests' with: #('Core' #'Microdown-RichTextPresenter-Tests' #'NewTools-DocumentBrowser-Tests' );
-			group: 'All' with: #('Core' 'Tests' ) ]
+			group: 'All' with: #('Core' 'Tests' ) 
+		]
 ]
