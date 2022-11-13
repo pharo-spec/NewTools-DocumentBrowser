@@ -112,7 +112,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	| ref dir |
-	ref := 'comment://package/Microdown-DocumentBrowser' asMicResourceReference.
+	ref := 'comment://package/NewTools-DocumentBrowser' asMicResourceReference.
 	dir := ref loadChildren.
 	self assert: dir size equals: 3.
 ]
@@ -120,7 +120,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_withTag [
 	| ref dir |
-	ref := 'comment://package/Microdown-DocumentBrowser-Tests-ResourceModel' asMicResourceReference.
+	ref := 'comment://package/NewTools-DocumentBrowser-Tests-ResourceModel' asMicResourceReference.
 	dir := ref loadChildren.
 	self assert: dir notEmpty.
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoClassCommentResourceReference  ] ).
