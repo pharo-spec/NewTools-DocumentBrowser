@@ -55,6 +55,18 @@ MicDocumentBrowser class >> itemsForDirectory: aFileDirectory [
 	^ { self serviceOpenMicrodownDirectory }
 ]
 
+{ #category : #opening }
+MicDocumentBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #'Documentation Browser')
+		parent: #HelpBrowser;
+		order: 1;
+		action: [ self open ];
+		iconName: #smallHelp;
+		help: 'Explore a list of available documentation.';
+		withSeparatorAfter
+]
+
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
 	"I ensure the browser to be open. If no browser exist, I instantiate one"
