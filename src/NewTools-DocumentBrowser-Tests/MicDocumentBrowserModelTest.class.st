@@ -12,15 +12,15 @@ Class {
 	#category : #'NewTools-DocumentBrowser-Tests-GUI'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #comments }
 MicDocumentBrowserModelTest class >> backupComment [
  ^ 'A MicDocumentBrowserModelTest is a test class for testing the behavior of MicDocumentBrowserModel.
 
 This comment has `comment://class/MicDocumentBrowserModelTest` as micResourceReference'
 ]
 
-{ #category : #'as yet unclassified' }
-MicDocumentBrowserModelTest class >> myCommentRefernce [
+{ #category : #comments }
+MicDocumentBrowserModelTest class >> myCommentReference [
 	^ 'comment://class/MicDocumentBrowserModelTest' asMicResourceReference
 ]
 
@@ -39,7 +39,7 @@ MicDocumentBrowserModelTest >> testCanSave [
 
 { #category : #tests }
 MicDocumentBrowserModelTest >> testDocument [
-	model resourceReference: self class myCommentRefernce.
+	model resourceReference: self class myCommentReference.
 	self 
 		assert: model document children first class equals: MicHeaderBlock.
 	model resourceReference: nil.
@@ -59,7 +59,7 @@ MicDocumentBrowserModelTest >> testInitilize [
 
 { #category : #tests }
 MicDocumentBrowserModelTest >> testIsDirty [
-	model resourceReference: self class myCommentRefernce.
+	model resourceReference: self class myCommentReference.
 	self deny: model isDirty.
 	model source: 'Dummy source'.
 	self assert: model isDirty
@@ -67,9 +67,9 @@ MicDocumentBrowserModelTest >> testIsDirty [
 
 { #category : #tests }
 MicDocumentBrowserModelTest >> testResourceReference [
-	model resourceReference: self class myCommentRefernce.
+	model resourceReference: self class myCommentReference.
 	self 
-		assert: model resourceReference uri equals: self class myCommentRefernce uri;
+		assert: model resourceReference uri equals: self class myCommentReference uri;
 		assert: model document children first class equals: MicHeaderBlock ;
 		assert: (model source first: 57) equals: 'A MicDocumentBrowserModelTest is a test class for testing';
 		assert: model canSave;
@@ -79,7 +79,7 @@ MicDocumentBrowserModelTest >> testResourceReference [
 { #category : #tests }
 MicDocumentBrowserModelTest >> testSave [
 	[
-		model resourceReference: self class myCommentRefernce.
+		model resourceReference: self class myCommentReference.
 		model 
 			source: 'Dummy source';
 			save.
@@ -102,7 +102,7 @@ MicDocumentBrowserModelTest >> testSave_not [
 
 { #category : #tests }
 MicDocumentBrowserModelTest >> testSource [
-	model resourceReference: self class myCommentRefernce.
+	model resourceReference: self class myCommentReference.
 	self 
 		assert: (model source first: 57) equals: 'A MicDocumentBrowserModelTest is a test class for testing'.
 	model resourceReference: nil.
