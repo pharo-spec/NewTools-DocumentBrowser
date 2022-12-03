@@ -59,7 +59,7 @@ MicDocumentBrowser class >> itemsForDirectory: aFileDirectory [
 MicDocumentBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Documentation Browser')
-		parent: #HelpBrowser;
+		parent: #Help;
 		order: 1;
 		action: [ self open ];
 		iconName: #smallHelp;
