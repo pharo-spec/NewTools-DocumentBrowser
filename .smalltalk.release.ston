@@ -1,0 +1,18 @@
+SmalltalkCISpec {
+  #preLoading : '.github/scripts/preLoading.st',
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'NewToolsDocumentBrowser',
+      #directory : 'src',
+      #onConflict : #useIncoming,
+      #onUpgrade : #useIncoming,
+      #ignoreImage : true
+    }
+  ],
+  #preTesting : [ '.github/scripts/preTesting.st' ],
+  #testing : {
+  	#packages : [ 
+  		'System-Settings-Tests.*',
+  		'ReleaseTests.*' ] 
+  }  
+}

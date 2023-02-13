@@ -1,0 +1,32 @@
+SmalltalkCISpec {
+  #preLoading : '.github/scripts/preLoading.st',
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'NewToolsDocumentBrowser',
+      #directory : 'src',
+      #onConflict : #useIncoming,
+      #onUpgrade : #useIncoming,
+      #ignoreImage : true
+    }
+  ],
+  #testing : {
+  	#include : { 
+  		#packages : [ '.*' ] 
+  	},
+  	#exclude : {
+  		#packages : [ 
+  			'UnifiedFFI.*',
+  			'ThreadedFFI.*',
+  			'Monticello.*',
+  			'Metacello.*',
+  			'System-Settings-Tests.*',
+  			'ReleaseTests.*' ],
+  		#classes : [
+  			#OutOfMemoryTest,
+  			#TraitFileOutTest,
+  			#PlatformResolverTest,
+  			#ProcessSpecificTest
+  		] 
+  	}
+  }  
+}
