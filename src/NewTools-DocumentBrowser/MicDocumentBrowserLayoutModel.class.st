@@ -15,9 +15,6 @@ Class {
 		'sourceMode',
 		'sourceLayouts'
 	],
-	#classVars : [
-		'Browser'
-	],
 	#category : #'NewTools-DocumentBrowser-GUI'
 }
 
@@ -25,9 +22,7 @@ Class {
 MicDocumentBrowserLayoutModel >> initialize [
 	showDocumentList := true.
 	showSource := false.
-	sourceMode := self sourceBotton.
-	sourceLayouts := nil.
-	
+	sourceMode := self sourceBotton
 ]
 
 { #category : #layouting }
@@ -80,7 +75,8 @@ MicDocumentBrowserLayoutModel >> showSource: anObject [
 
 { #category : #'source modes' }
 MicDocumentBrowserLayoutModel >> sourceBotton [
-	^'Source bottom'
+
+	^ 'Source bottom'
 ]
 
 { #category : #'source modes' }
@@ -99,7 +95,8 @@ MicDocumentBrowserLayoutModel >> sourceLayouts [
 
 { #category : #'source modes' }
 MicDocumentBrowserLayoutModel >> sourceLeft [
-	^   'Source left'
+
+	^ 'Source left'
 ]
 
 { #category : #accessing }
@@ -122,7 +119,8 @@ MicDocumentBrowserLayoutModel >> sourceModes [
 
 { #category : #'source modes' }
 MicDocumentBrowserLayoutModel >> sourceRight [
-	^  'Source right'
+
+	^ 'Source right'
 ]
 
 { #category : #'source modes' }

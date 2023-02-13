@@ -108,10 +108,14 @@ MicSectionBlock >> header: headerBlock [
 
 { #category : #initialization }
 MicSectionBlock >> initialize [
+
 	super initialize.
-	header := nil.
-	body := MicIntermediateBlock new parent: self; yourself.
-	subsections := MicIntermediateBlock new parent: self; yourself.
+	body := MicIntermediateBlock new
+		        parent: self;
+		        yourself.
+	subsections := MicIntermediateBlock new
+		               parent: self;
+		               yourself
 ]
 
 { #category : #displaying }
