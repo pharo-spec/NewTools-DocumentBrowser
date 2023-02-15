@@ -181,7 +181,7 @@ MicPharoPackageCommentResourceReference >> parentPackage [
 	| parts package |
 	parts := categoryName splitOn: '-'.
 	parts size to: 1 by: -1 do: [ :i | 
-		package := ((parts truncateTo: i) joinUsing: '-') asPackageIfAbsent: [ nil ].
+		package := ((parts first: i) joinUsing: '-') asPackageIfAbsent: [ nil ].
 		package ifNotNil: [ ^ package ]
 		 ].
 	^ nil
@@ -197,7 +197,7 @@ MicPharoPackageCommentResourceReference >> reduceCategoryName: aString toLevel: 
 	"a package name aaa-bbb-ccc-ddd reduced to level 0 is aaa, reduced to 2 is aaa-bbb-ccc"
 	| parts |
 	parts := aString splitOn: $-.
-	^ (parts truncateTo: level+1) joinUsing: $-
+	^ (parts first: level+1) joinUsing: $-
 ]
 
 { #category : #accessing }
