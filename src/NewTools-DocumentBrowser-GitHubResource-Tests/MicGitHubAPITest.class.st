@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'api'
 	],
-	#category : #'NewTools-DocumentBrowser-Tests-ResourceModel'
+	#category : #'NewTools-DocumentBrowser-GitHubResource-Tests'
 }
 
 { #category : #'api - accessing' }

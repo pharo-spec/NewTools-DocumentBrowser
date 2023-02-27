@@ -393,11 +393,11 @@ MicDocumentBrowser >> layout [
 MicDocumentBrowser >> loadedDocsInWorkspace [
 	"I return all the doc folders which exist in the local iceberg repository"
 	| iceRepository githubUsers |
-	iceRepository := FileSystem workingDirectory / 'pharo-local' / 'iceberg'.
+	iceRepository := FileLocator localDirectory / 'iceberg'.
 	githubUsers := iceRepository directories.
 	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
 		collect: [ :project | project directories ]) flattened
-		select: [ :dir | #('doc' 'docs') includes: dir basename ]
+		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename asLowercase ]
 ]
 
 { #category : #layout }

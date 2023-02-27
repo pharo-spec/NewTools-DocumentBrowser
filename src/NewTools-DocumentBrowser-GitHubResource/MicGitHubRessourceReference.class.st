@@ -25,7 +25,7 @@ Class {
 		'docFolder',
 		'children'
 	],
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#category : #'NewTools-DocumentBrowser-GitHubResource'
 }
 
 { #category : #'instance creation' }
