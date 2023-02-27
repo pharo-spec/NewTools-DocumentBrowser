@@ -397,7 +397,7 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 	githubUsers := iceRepository directories.
 	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
 		collect: [ :project | project directories ]) flattened
-		select: [ :dir | #('doc' 'docs') includes: dir basename ]
+		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename ]
 ]
 
 { #category : #layout }
