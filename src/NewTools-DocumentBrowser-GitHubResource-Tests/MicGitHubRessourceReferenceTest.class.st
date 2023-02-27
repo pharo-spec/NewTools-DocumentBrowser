@@ -4,7 +4,7 @@ A MicGitHubRessourceReferenceTest is a test class for testing the behavior of Mi
 Class {
 	#name : #MicGitHubRessourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'NewTools-DocumentBrowser-Tests-ResourceModel'
+	#category : #'NewTools-DocumentBrowser-GitHubResource-Tests'
 }
 
 { #category : #'api - accessing' }

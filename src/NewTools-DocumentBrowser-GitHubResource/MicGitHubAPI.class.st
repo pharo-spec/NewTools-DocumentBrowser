@@ -13,7 +13,7 @@ Class {
 		'NextReset',
 		'ResponseCache'
 	],
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#category : #'NewTools-DocumentBrowser-GitHubResource'
 }
 
 { #category : #rates }

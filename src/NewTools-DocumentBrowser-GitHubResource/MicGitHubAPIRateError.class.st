@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'response'
 	],
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#category : #'NewTools-DocumentBrowser-GitHubResource'
 }
 
 { #category : #accessing }
