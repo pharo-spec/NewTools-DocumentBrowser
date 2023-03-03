@@ -19,9 +19,9 @@ MicDocumentBrowserButtonBar >> initializePresenters [
 	left := self newButtonBar placeAtStart.
 	right := self newButtonBar.
 	self layout: (SpBoxLayout newHorizontal
-			 add: left;
-			 add: self newNullPresenter;
-			 add: right)
+			 add: left expand: false;
+			 addLast: right expand: false;
+			 yourself)
 ]
 
 { #category : #'api - adding' }
