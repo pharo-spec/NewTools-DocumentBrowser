@@ -182,8 +182,7 @@ MicDocumentBrowser >> disableEventsDuring: aBlock [
 	and only the outermost will reset back to the default false value"
 	old := disableEvents.
 	disableEvents := true.
-	aBlock value.
-	disableEvents := old. 
+	aBlock ensure: [ disableEvents := old ]
 ]
 
 { #category : #navigation }
