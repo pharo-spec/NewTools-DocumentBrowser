@@ -244,12 +244,10 @@ MicTextPresenter >> rawSelection: anInterval [
 	self property: #selection rawValue: anInterval
 ]
 
-{ #category : #accessing }
-MicTextPresenter >> renderWidth: renderWidth [
-	"I am called by the morph directly to recompute image sizes"
-	adapter ifNil: [ ^self ]. "I can be asked to render during setup"
-	scalingImageIndexes  do: [ :idx | 
-		(text attributeAt: idx ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
+{ #category : #private }
+MicTextPresenter >> scalingImageIndexes [
+
+	^ scalingImageIndexes
 ]
 
 { #category : #'api - selection' }

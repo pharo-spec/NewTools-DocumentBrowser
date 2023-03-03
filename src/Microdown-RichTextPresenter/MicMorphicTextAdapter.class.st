@@ -47,6 +47,13 @@ MicMorphicTextAdapter >> menu [
 	^ nil.
 ]
 
+{ #category : #rendering }
+MicMorphicTextAdapter >> renderWidth: renderWidth [
+	"I am called by the morph directly to recompute image sizes"
+	self presenter scalingImageIndexes do: [ :index | 
+		(self presenter text attributeAt: index ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
+]
+
 { #category : #'presenter->morph' }
 MicMorphicTextAdapter >> selectionInterval [
 	"called by the presenter to get the selection in the morph"
