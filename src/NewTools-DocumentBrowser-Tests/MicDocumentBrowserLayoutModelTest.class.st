@@ -28,7 +28,7 @@ MicDocumentBrowserLayoutModelTest >> testInitilize [
 	self
 		assert: model showDocumentList;
 		deny: model showSource;
-		assert: model sourceMode equals: model sourceBotton 
+		assert: model sourceMode equals: model sourceBottom 
 ]
 
 { #category : #tests }
@@ -63,7 +63,7 @@ MicDocumentBrowserLayoutModelTest >> testSourceBottom [
 	| layout |
 	model showDocumentList: false.
 	model showSource: true.
-	model sourceMode: model sourceBotton.
+	model sourceMode: model sourceBottom.
 	layout := model 
 		layoutList: testDocumentList  
 		rendering: testRender 

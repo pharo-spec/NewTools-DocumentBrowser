@@ -105,7 +105,7 @@ MicDocumentBrowser class >> serviceOpenMicrodownDirectory [
 
 	^ (SimpleServiceEntry
 		provider: self 
-		label: 'Open Micodown document'
+		label: 'Open Microdown document'
 		selector: #openDocument:
 		description: 'Open a this document in Microdown Document Browser'
 		buttonLabel: 'Microdown')
@@ -118,7 +118,7 @@ MicDocumentBrowser class >> serviceOpenMicrodownDocument [
 
 	^ (SimpleServiceEntry
 		provider: self 
-		label: 'Open Micodown document'
+		label: 'Open Microdown document'
 		selector: #openDocument:
 		description: 'Open a this document in Microdown Document Browser'
 		buttonLabel: 'Microdown')
@@ -303,8 +303,16 @@ MicDocumentBrowser >> initialize [
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
 	disableEvents := false.
-	self intializeApplication.
+	self initializeApplication.
 	super initialize
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> initializeApplication [
+	browserApp := SpApplication new.
+	self initializeStylesheet.
+	self application: browserApp.
+	
 ]
 
 { #category : #initialization }
@@ -372,14 +380,6 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter whenClosedDo: [ 
 		self guiSaveSource.
 		Browser := nil ].
-]
-
-{ #category : #'dirty indication' }
-MicDocumentBrowser >> intializeApplication [
-	browserApp := SpApplication new.
-	self initializeStylesheet.
-	self application: browserApp.
-	
 ]
 
 { #category : #layout }
