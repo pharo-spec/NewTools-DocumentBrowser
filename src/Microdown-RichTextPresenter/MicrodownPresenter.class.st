@@ -31,20 +31,20 @@ MicrodownPresenter >> compose [
 		asRichText: self document)
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> document [
 
 	^ document
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> document: aNode [
 
 	document := aNode.
 	self compose.
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> documentFromString: aString [
 
 	self document: (self parserClass parse: aString)
@@ -57,26 +57,26 @@ MicrodownPresenter >> parserClass [
 	^ Microdown
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> textStyler [
 	textStyler ifNil: [ textStyler := MicTextStyler new ].
 	^ textStyler
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> textStyler: styler [
 
 	textStyler := styler.
 	self compose
 ]
 
-{ #category : #enumerating }
+{ #category : #'api - events' }
 MicrodownPresenter >> whenDocumentChangedDo: aBlock [
 
 	self property: #document whenChangedDo: aBlock
 ]
 
-{ #category : #enumerating }
+{ #category : #'api - events' }
 MicrodownPresenter >> whenTextStylerChangedDo: aBlock [
 
 	self property: #textStyler whenChangedDo: aBlock

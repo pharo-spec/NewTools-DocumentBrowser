@@ -238,7 +238,7 @@ MicTextPresenter >> isWrapWord [
 	^ wrapWord
 ]
 
-{ #category : #selection }
+{ #category : #private }
 MicTextPresenter >> rawSelection: anInterval [
 
 	self property: #selection rawValue: anInterval
@@ -252,17 +252,17 @@ MicTextPresenter >> renderWidth: renderWidth [
 		(text attributeAt: idx ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
 ]
 
-{ #category : #selection }
+{ #category : #'api - selection' }
 MicTextPresenter >> selectAll [
 	self selectionInterval: (1 to: text size)
 ]
 
-{ #category : #selection }
+{ #category : #'api - selection' }
 MicTextPresenter >> selectNone [
 	self selectionInterval: (1 to: 0)
 ]
 
-{ #category : #selection }
+{ #category : #'api - selection' }
 MicTextPresenter >> selectedText [ 
 	"Answer the text contained in selection interval 
 	(See `SpAbstractTextPresenter>>#selectionInterval`)"
@@ -276,7 +276,7 @@ MicTextPresenter >> selectedText [
 		to: selectionInterval last
 ]
 
-{ #category : #selection }
+{ #category : #'api - selection' }
 MicTextPresenter >> selectionInterval [
 	"Answer the text selection interval (an interval from start to end)."
 	
@@ -285,7 +285,7 @@ MicTextPresenter >> selectionInterval [
 	^ selection ifNil: [ 1 to: 0 ]
 ]
 
-{ #category : #selection }
+{ #category : #'api - selection' }
 MicTextPresenter >> selectionInterval: anInterval [
 	"Set the text selection interval.
 	 `anInterval` is an `Interval` from the first character selected to the end."
@@ -295,13 +295,13 @@ MicTextPresenter >> selectionInterval: anInterval [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicTextPresenter >> text [
 
 	^ text
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicTextPresenter >> text: aText [
 	text := aText asText "just in case I was given a string".
 	scalingImageIndexes := (1 to: text size) 
@@ -312,7 +312,7 @@ MicTextPresenter >> text: aText [
 	
 ]
 
-{ #category : #enumerating }
+{ #category : #'api - events' }
 MicTextPresenter >> whenSelectionChangedDo: aBlock [
 	"Inform when selection changed. 
 	 `aBlock` receives two optional arguments 
@@ -322,7 +322,7 @@ MicTextPresenter >> whenSelectionChangedDo: aBlock [
 	self property: #selection whenChangedDo: aBlock
 ]
 
-{ #category : #api }
+{ #category : #'api - events' }
 MicTextPresenter >> whenTextChangedDo: aBlock [
 	"Inform when text has been changed (`text:` has been called)
 	 `aBlock` receives two optional arguments 
