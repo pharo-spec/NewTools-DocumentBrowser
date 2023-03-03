@@ -25,6 +25,8 @@ MicrodownPresenter class >> open [
 { #category : #composing }
 MicrodownPresenter >> compose [
 
+	self flag: 'should maybe happen in adapter?'.
+	
 	self document ifNil: [ ^ self ].
 	self text: (MicRichTextComposer new 
 		textStyler: self textStyler; 
