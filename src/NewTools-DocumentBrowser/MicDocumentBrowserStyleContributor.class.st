@@ -4,7 +4,7 @@ A style contributor for the document browser, it adds specific styles to be used
 Class {
 	#name : #MicDocumentBrowserStyleContributor,
 	#superclass : #StPharoStyleContributor,
-	#category : #'NewTools-DocumentBrowser'
+	#category : #'NewTools-DocumentBrowser-GUI'
 }
 
 { #category : #styles }
