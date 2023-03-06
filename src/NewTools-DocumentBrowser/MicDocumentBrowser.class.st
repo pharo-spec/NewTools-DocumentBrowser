@@ -141,6 +141,19 @@ MicDocumentBrowser >> addRoot: document [
 	
 ]
 
+{ #category : #events }
+MicDocumentBrowser >> cancelSourceChange [
+	"called by whenResetDo: on spSource "
+	disableEvents ifTrue: [ ^ self ].
+	documentModel isDirty ifFalse: [ ^ self ].
+
+	self disableEventsDuring: [ 
+		documentModel source: nil.
+		self showSourceNotDirty.
+		spSource 
+			text: documentModel source]
+]
+
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
 	"I am a utility method to find children in a node"
@@ -159,11 +172,11 @@ MicDocumentBrowser >> childrenOf: aNode [
 MicDocumentBrowser >> connectPresenters [
 	"Listen to gui input"
 	spDocumentList 
-		whenSelectionChangedDo: [ :selection | self guiNewSelection: selection selectedItem ].
+		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
 	spSource 
-		whenSubmitDo: [:text|  self guiSaveSource ];
-		whenResetDo: [ :text | self guiCancelSourceChange ];
-		whenTextChangedDo: [ :newSource | self guiSetSource: newSource ]
+		whenSubmitDo: [:text|  self saveSource ];
+		whenResetDo: [ :text | self cancelSourceChange ];
+		whenTextChangedDo: [ :newSource | self setSource: newSource ]
 ]
 
 { #category : #private }
@@ -223,84 +236,6 @@ MicDocumentBrowser >> documentSelected: document [
 		(self displayStringOf: documentModel resourceReference)
 ]
 
-{ #category : #events }
-MicDocumentBrowser >> guiCancelSourceChange [
-	"called by whenResetDo: on spSource "
-	disableEvents ifTrue: [ ^ self ].
-	documentModel isDirty ifFalse: [ ^ self ].
-
-	self disableEventsDuring: [ 
-		documentModel source: nil.
-		self showSourceNotDirty.
-		spSource 
-			text: documentModel source]
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiNewSelection: selection [
-	"I am called when a user selects a new element in spDocumentList"
-	disableEvents ifTrue: [ ^ self ].
-	self documentSelected: selection
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiSaveSource [
-	"called by save button or accept in spSource"
-	| path sourceSelection sourceScroll |
-	disableEvents ifTrue: [ ^ self ].
-	documentModel isDirty ifFalse: [ ^ self ].
-	self disableEventsDuring: [ 
-		documentModel
-			source: spSource text;
-			save.
-		self showSourceNotDirty.
-		spRendering document: documentModel document.
-		"Sync the views"
-		path := spDocumentList selection selectedPath.
-		sourceSelection := spSource selectionInterval.
-		sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
-		spDocumentList roots: self documentRoots.
-		spDocumentList
-			expandPath: path;
-			selectPath: path.
-		spSource selectionInterval: sourceSelection.
-		spSource adapter setScrollValue: 0 @ sourceScroll.
-		spRendering adapter setScrollValue: 0 @ sourceScroll.
-		spSource takeKeyboardFocus ]
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiSetListShowing: aBoolean [
-	"Change layout to include the document list or not"
-	layoutModel showDocumentList: aBoolean.
-	self disableEventsDuring: [ self setTopLayout ] 
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiSetSource: newSource [
-	"called by changes to spSource"
-	disableEvents ifTrue: [ ^ self ].
-	documentModel source: newSource.
-	self showSourceDirty
-	
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiSetSourceMode: sourceMode [
-	"Change the layout as how spRendering and spSource are placed"
-	layoutModel sourceMode: sourceMode.
-	self disableEventsDuring: [ self setTopLayout  ]
-]
-
-{ #category : #events }
-MicDocumentBrowser >> guiSetSourceShowing: showSource [
-	"change layout to include spSource or not"
-	layoutModel showSource: showSource.
-	self disableEventsDuring: [
-		self setTopLayout.
-		self updateSourcePresenter]
-]
-
 { #category : #initialization }
 MicDocumentBrowser >> initialize [
 	"Initialize my models first"
@@ -318,19 +253,19 @@ MicDocumentBrowser >> initializeButtons [
 		left: (spButtonBar newCheckBox
 			label: 'Show List';
 			state: layoutModel showDocumentList;
-			whenChangedDo: [ :val | self guiSetListShowing: val ]);
+			whenChangedDo: [ :val | self setListShowing: val ]);
 		right: (spButtonBar newDropList
 			help: 'source view';
 			items: layoutModel sourceModes;
-			whenSelectedItemChangedDo: [ :item | self guiSetSourceMode: item ]);
+			whenSelectedItemChangedDo: [ :item | self setSourceMode: item ]);
 		right: (saveButton := spButtonBar newButton
 			label: 'Save';
 			state: layoutModel showSource;
-			action: [ self guiSaveSource ]);
+			action: [ self saveSource ]);
 		right: (spButtonBar newCheckBox
 			label: 'Show Source';
 			state: layoutModel showSource;
-			whenChangedDo: [ :val | self guiSetSourceShowing: val ])
+			whenChangedDo: [ :val | self setSourceShowing: val ])
 ]
 
 { #category : #initialization }
@@ -359,7 +294,7 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		whenOpenedDo: [ Browser := self ];
 		whenClosedDo: [
-			self guiSaveSource.
+			self saveSource.
 			Browser := nil ]
 ]
 
@@ -372,6 +307,71 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
 		collect: [ :project | project directories ]) flattened
 		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename asLowercase ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> newSelection: selection [
+	"I am called when a user selects a new element in spDocumentList"
+	disableEvents ifTrue: [ ^ self ].
+	self documentSelected: selection
+]
+
+{ #category : #events }
+MicDocumentBrowser >> saveSource [
+	"called by save button or accept in spSource"
+	| path sourceSelection sourceScroll |
+	disableEvents ifTrue: [ ^ self ].
+	documentModel isDirty ifFalse: [ ^ self ].
+	self disableEventsDuring: [ 
+		documentModel
+			source: spSource text;
+			save.
+		self showSourceNotDirty.
+		spRendering document: documentModel document.
+		"Sync the views"
+		path := spDocumentList selection selectedPath.
+		sourceSelection := spSource selectionInterval.
+		sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
+		spDocumentList roots: self documentRoots.
+		spDocumentList
+			expandPath: path;
+			selectPath: path.
+		spSource selectionInterval: sourceSelection.
+		spSource adapter setScrollValue: 0 @ sourceScroll.
+		spRendering adapter setScrollValue: 0 @ sourceScroll.
+		spSource takeKeyboardFocus ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> setListShowing: aBoolean [
+	"Change layout to include the document list or not"
+	layoutModel showDocumentList: aBoolean.
+	self disableEventsDuring: [ self setTopLayout ] 
+]
+
+{ #category : #events }
+MicDocumentBrowser >> setSource: newSource [
+	"called by changes to spSource"
+	disableEvents ifTrue: [ ^ self ].
+	documentModel source: newSource.
+	self showSourceDirty
+	
+]
+
+{ #category : #events }
+MicDocumentBrowser >> setSourceMode: sourceMode [
+	"Change the layout as how spRendering and spSource are placed"
+	layoutModel sourceMode: sourceMode.
+	self disableEventsDuring: [ self setTopLayout  ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> setSourceShowing: showSource [
+	"change layout to include spSource or not"
+	layoutModel showSource: showSource.
+	self disableEventsDuring: [
+		self setTopLayout.
+		self updateSourcePresenter]
 ]
 
 { #category : #layout }
