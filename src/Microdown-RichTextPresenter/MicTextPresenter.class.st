@@ -18,11 +18,10 @@ Class {
 	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
 		'#text => ObservableSlot',
-		'#scalingImageIndexes',
 		'#selection => ObservableSlot',
 		'#wrapWord => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextPresenter'
+	#category : #'Microdown-RichTextPresenter-Widgets'
 }
 
 { #category : #specs }
@@ -216,19 +215,11 @@ Here are direct links to classes and method
 And this is another line'
 ]
 
-{ #category : #api }
-MicTextPresenter >> enabled: aBoolean [
-	"Set if the widget is enabled (clickable or focusable)"
-
-	super enabled: aBoolean.
-	self changed: #enabled: with: { aBoolean }
-]
-
 { #category : #initialization }
 MicTextPresenter >> initialize [
+
 	super initialize.
-	text := '' asText.
-	scalingImageIndexes := Array new.
+	text := '' asText
 ]
 
 { #category : #testing }
@@ -244,19 +235,15 @@ MicTextPresenter >> rawSelection: anInterval [
 	self property: #selection rawValue: anInterval
 ]
 
-{ #category : #private }
-MicTextPresenter >> scalingImageIndexes [
-
-	^ scalingImageIndexes
-]
-
 { #category : #'api - selection' }
 MicTextPresenter >> selectAll [
+
 	self selectionInterval: (1 to: text size)
 ]
 
 { #category : #'api - selection' }
 MicTextPresenter >> selectNone [
+
 	self selectionInterval: (1 to: 0)
 ]
 
@@ -277,9 +264,9 @@ MicTextPresenter >> selectedText [
 { #category : #'api - selection' }
 MicTextPresenter >> selectionInterval [
 	"Answer the text selection interval (an interval from start to end)."
-	
-	self withAdapterDo: [ :anAdapter | 
-		self property: #selection rawValue: anAdapter selectionInterval].
+
+	self withAdapterDo: [ :anAdapter |
+		self rawSelection: anAdapter selectionInterval].
 	^ selection ifNil: [ 1 to: 0 ]
 ]
 
@@ -287,10 +274,8 @@ MicTextPresenter >> selectionInterval [
 MicTextPresenter >> selectionInterval: anInterval [
 	"Set the text selection interval.
 	 `anInterval` is an `Interval` from the first character selected to the end."
-	
-	selection := anInterval.
-	adapter selectionInterval: anInterval
-	
+
+	selection := anInterval
 ]
 
 { #category : #api }
@@ -301,13 +286,8 @@ MicTextPresenter >> text [
 
 { #category : #api }
 MicTextPresenter >> text: aText [
-	text := aText asText "just in case I was given a string".
-	scalingImageIndexes := (1 to: text size) 
-		select: [ :idx | 
-			((text at: idx) = Character home) 
-			and: [ (text attributeAt: idx ofKind: MicScalingTextAnchor) notNil ] ].
-	self withAdapterDo: [ adapter setText: aText ]
-	
+
+	text := aText asText "just in case I was given a string"
 ]
 
 { #category : #'api - events' }

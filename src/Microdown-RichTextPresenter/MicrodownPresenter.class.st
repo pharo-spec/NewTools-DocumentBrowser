@@ -12,25 +12,20 @@ Class {
 		'#document => ObservableSlot',
 		'#textStyler => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextPresenter'
+	#category : #'Microdown-RichTextPresenter-Widgets'
 }
+
+{ #category : #specs }
+MicrodownPresenter class >> adapterName [
+
+	^ #MicMorphicMicrodownAdapter
+]
 
 { #category : #'instance creation' }
 MicrodownPresenter class >> open [
 
 	<script>
 	(self new document: MicTextPresenter cheetSheet) open
-]
-
-{ #category : #composing }
-MicrodownPresenter >> compose [
-
-	self flag: 'should maybe happen in adapter?'.
-	
-	self document ifNil: [ ^ self ].
-	self text: (MicRichTextComposer new 
-		textStyler: self textStyler; 
-		asRichText: self document)
 ]
 
 { #category : #api }
@@ -42,8 +37,7 @@ MicrodownPresenter >> document [
 { #category : #api }
 MicrodownPresenter >> document: aNode [
 
-	document := aNode.
-	self compose.
+	document := aNode
 ]
 
 { #category : #api }
@@ -54,22 +48,21 @@ MicrodownPresenter >> documentFromString: aString [
 		
 ]
 
-{ #category : #initialization }
-MicrodownPresenter >> parserClass [ 
+{ #category : #private }
+MicrodownPresenter >> parserClass [
 	^ Microdown
 ]
 
 { #category : #api }
 MicrodownPresenter >> textStyler [
-	textStyler ifNil: [ textStyler := MicTextStyler new ].
-	^ textStyler
+
+	^ textStyler ifNil: [ textStyler := MicTextStyler new ]
 ]
 
 { #category : #api }
 MicrodownPresenter >> textStyler: styler [
 
-	textStyler := styler.
-	self compose
+	textStyler := styler
 ]
 
 { #category : #'api - events' }
