@@ -22,7 +22,7 @@ In order to prevent cycles in the events, all methods called through gui actions
 "
 Class {
 	#name : #MicDocumentBrowser,
-	#superclass : #SpPresenter,
+	#superclass : #StPresenter,
 	#instVars : [
 		'spButtonBar',
 		'spDocumentList',
@@ -32,8 +32,7 @@ Class {
 		'documentRoots',
 		'documentModel',
 		'layoutModel',
-		'disableEvents',
-		'browserApp'
+		'disableEvents'
 	],
 	#classVars : [
 		'Browser'
@@ -175,6 +174,12 @@ MicDocumentBrowser >> defaultDocumentRoots [
 			collect: #asMicResourceReference
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> defaultLayout [
+
+	^ self topLayout
+]
+
 { #category : #events }
 MicDocumentBrowser >> disableEventsDuring: aBlock [
 	| old | 
@@ -302,16 +307,7 @@ MicDocumentBrowser >> initialize [
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
 	disableEvents := false.
-	self initializeApplication.
 	super initialize
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeApplication [
-	browserApp := SpApplication new.
-	self initializeStylesheet.
-	self application: browserApp.
-	
 ]
 
 { #category : #initialization }
@@ -320,30 +316,28 @@ MicDocumentBrowser >> initializeButtons [
 	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
 	spButtonBar
 		left: (spButtonBar newCheckBox
-				 label: 'Show List';
-				 state: layoutModel showDocumentList;
-				 whenChangedDo: [ :val | self guiSetListShowing: val ]);
+			label: 'Show List';
+			state: layoutModel showDocumentList;
+			whenChangedDo: [ :val | self guiSetListShowing: val ]);
 		right: (spButtonBar newDropList
-				 help: 'source view';
-				 items: layoutModel sourceModes;
-				 whenSelectedItemChangedDo: [ :item | 
-					 self guiSetSourceMode: item ]);
+			help: 'source view';
+			items: layoutModel sourceModes;
+			whenSelectedItemChangedDo: [ :item | self guiSetSourceMode: item ]);
 		right: (saveButton := spButtonBar newButton
-				 label: 'Save';
-				 state: layoutModel showSource;
-				  action: [ self guiSaveSource ]);
+			label: 'Save';
+			state: layoutModel showSource;
+			action: [ self guiSaveSource ]);
 		right: (spButtonBar newCheckBox
-				 label: 'Show Source';
-				 state: layoutModel showSource;
-				 whenChangedDo: [ :val | self guiSetSourceShowing: val ])
+			label: 'Show Source';
+			state: layoutModel showSource;
+			whenChangedDo: [ :val | self guiSetSourceShowing: val ])
 ]
 
 { #category : #initialization }
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
-	
-	Browser := self.
+
 	spDocumentList := self newTree.
 	spDocumentList
 		roots: self documentRoots;
@@ -356,36 +350,17 @@ MicDocumentBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MicDocumentBrowser >> initializeStylesheet [
-	browserApp backend name = #Morphic
-		ifTrue: [ browserApp  addStyleSheetFromString: '.application [
-    .dirty [ Container { #borderColor: #red, #borderWidth: 1 } ],
-    .notDirty [ Container { #borderColor: #transparent, #borderWidth: 1 } ]]'].
-	browserApp backend name = #Gtk
-		ifTrue: [ browserApp addCSSProviderFromString: '
-.dirty { 
-    border-color: red; 
-    border-width: 1px; }
-' ]
-]
-
-{ #category : #initialization }
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	"Adds window closing behaviour"
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter 
+	aWindowPresenter
 		initialExtent: 1000@600;
 		title: 'Microdown document browser'.
-	aWindowPresenter whenClosedDo: [ 
-		self guiSaveSource.
-		Browser := nil ].
-]
-
-{ #category : #layout }
-MicDocumentBrowser >> layout [
-	"I use dynamic layout"
-	layout ifNil: [ self setTopLayout  ].
-	^ layout 
+	aWindowPresenter
+		whenOpenedDo: [ Browser := self ];
+		whenClosedDo: [
+			self guiSaveSource.
+			Browser := nil ]
 ]
 
 { #category : #private }
@@ -402,13 +377,7 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
 	"I set the layout of the browser. The dynamic part of the layout is done by layoutModel"
-	self layout: (SpBoxLayout newTopToBottom
-		add: (layoutModel
-			layoutList: spDocumentList
-			rendering: spRendering
-			source: spSource);
-		add: spButtonBar expand: false;
-		yourself)
+	self layout: self topLayout
 ]
 
 { #category : #'dirty indication' }
@@ -421,14 +390,26 @@ MicDocumentBrowser >> showSourceNotDirty [
 	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> topLayout [
+
+	^ SpBoxLayout newTopToBottom
+		add: (layoutModel
+			layoutList: spDocumentList
+			rendering: spRendering
+			source: spSource);
+		add: spButtonBar expand: false;
+		yourself
+]
+
 { #category : #updating }
 MicDocumentBrowser >> updateSourcePresenter [
 	""
-	layoutModel showSource ifTrue: [ 
-		self disableEventsDuring: [ 
+	layoutModel showSource ifTrue: [
+		self disableEventsDuring: [
 			spSource
 				editable: documentModel canSave;
-				text: documentModel source.
+				text: (documentModel source ifNil: [ '' ]).
 			spSource adapter color: (documentModel canSave
 					 ifTrue: [ self theme backgroundColor ]
 					 ifFalse: [ self theme lightBaseColor ]).

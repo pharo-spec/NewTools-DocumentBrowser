@@ -9,7 +9,7 @@ I override `textAreaExtentChanged` to hook into rescaling of UI. Notice I assume
 Class {
 	#name : #MicScrolledTextMorph,
 	#superclass : #RubScrolledTextMorph,
-	#category : #'Microdown-RichTextPresenter'
+	#category : #'Microdown-RichTextPresenter-Adapters'
 }
 
 { #category : #accessing }

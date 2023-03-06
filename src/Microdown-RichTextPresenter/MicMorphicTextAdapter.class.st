@@ -1,5 +1,5 @@
 "
-I am an adapter used by `SpRichTextPresenter` to connect to a `SpRichTextMorph`.
+I am an adapter used by `MicTextPresenter` to connect to a `MicScrolledTextMorph`.
 
 ## Implementation
 My primary method is `buildWidget` which creates an instance of `SpRichTextMorph`. 
@@ -10,13 +10,16 @@ Perhaps in the future the methods for menu and shiftMenu should be forwarded to 
 Class {
 	#name : #MicMorphicTextAdapter,
 	#superclass : #SpAbstractMorphicAdapter,
-	#category : #'Microdown-RichTextPresenter'
+	#instVars : [
+		'scalingImageIndexes'
+	],
+	#category : #'Microdown-RichTextPresenter-Adapters'
 }
 
 { #category : #factory }
 MicMorphicTextAdapter >> buildWidget [
 	| newWidget |
-	
+
 	newWidget := (MicScrolledTextMorph  on: self)
 		beReadOnly;
 		beWrapped;
@@ -29,10 +32,18 @@ MicMorphicTextAdapter >> buildWidget [
 		getTextSelector: #getText;
 		setTextSelector: #accept:notifying:;
 		yourself.
-	
-	newWidget setText: self presenter text.
-	self presenter selectionInterval 
+
+	self setEnabled: self presenter isEnabled to: newWidget.
+
+	self setText: self presenter text to: newWidget.
+	self presenter whenTextChangedDo: [ :text |
+		self setText: text to: newWidget ].
+
+	self presenter selectionInterval
 		ifNotNil: [  :anInterval | self selectionInterval: anInterval].
+	self presenter whenSelectionChangedDo: [ :selectionInterval |
+		self selectionInterval: selectionInterval ].
+
 	^ newWidget
 ]
 
@@ -42,6 +53,13 @@ MicMorphicTextAdapter >> getText [
 	^ model text
 ]
 
+{ #category : #initialization }
+MicMorphicTextAdapter >> initialize [
+
+	super initialize.
+	scalingImageIndexes := Array new
+]
+
 { #category : #'morph->presenter' }
 MicMorphicTextAdapter >> menu [
 	^ nil.
@@ -49,9 +67,18 @@ MicMorphicTextAdapter >> menu [
 
 { #category : #rendering }
 MicMorphicTextAdapter >> renderWidth: renderWidth [
+
 	"I am called by the morph directly to recompute image sizes"
-	self presenter scalingImageIndexes do: [ :index | 
-		(self presenter text attributeAt: index ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
+	self scalingImageIndexes do: [ :index |
+		(self presenter text
+			attributeAt: index ofKind: MicScalingTextAnchor)
+			targetWidth: renderWidth ]
+]
+
+{ #category : #'presenter->morph' }
+MicMorphicTextAdapter >> scalingImageIndexes [
+
+	^ scalingImageIndexes
 ]
 
 { #category : #'presenter->morph' }
@@ -63,8 +90,14 @@ MicMorphicTextAdapter >> selectionInterval [
 { #category : #'presenter->morph' }
 MicMorphicTextAdapter >> selectionInterval: anInterval [
 	"called by presenter to set selection in morph"
-	self widgetDo: [ :w | w setTextAreaSelection: anInterval ].
-	
+
+	self widgetDo: [ :w | w setTextAreaSelection: anInterval ]
+]
+
+{ #category : #factory }
+MicMorphicTextAdapter >> setEnabled: aBoolean to: aWidget [
+
+	aWidget enabled: aBoolean
 ]
 
 { #category : #initialization }
@@ -86,10 +119,21 @@ MicMorphicTextAdapter >> setSelection: interval [
 { #category : #'presenter->morph' }
 MicMorphicTextAdapter >> setText: aText [
 	"called by presenter to set text in morph"
-	widget ifNotNil: [ 
-		widget 
-			setText: aText;
-			resetState ]
+	self widgetDo: [ :w |self setText: aText to: w ]
+]
+
+{ #category : #'presenter->morph' }
+MicMorphicTextAdapter >> setText: aText to: aWidget [
+	"called by presenter to set text in morph"
+
+	scalingImageIndexes := (1 to: aText size)
+		select: [ :idx |
+			((aText at: idx) = Character home)
+			and: [ (aText attributeAt: idx ofKind: MicScalingTextAnchor) notNil ] ].
+
+	aWidget
+		setText: aText;
+		resetState
 ]
 
 { #category : #'morph->presenter' }
