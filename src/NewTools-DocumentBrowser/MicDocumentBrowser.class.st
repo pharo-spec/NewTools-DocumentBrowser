@@ -174,6 +174,12 @@ MicDocumentBrowser >> defaultDocumentRoots [
 			collect: #asMicResourceReference
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> defaultLayout [
+
+	^ self topLayout
+]
+
 { #category : #events }
 MicDocumentBrowser >> disableEventsDuring: aBlock [
 	| old | 
@@ -310,22 +316,21 @@ MicDocumentBrowser >> initializeButtons [
 	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
 	spButtonBar
 		left: (spButtonBar newCheckBox
-				 label: 'Show List';
-				 state: layoutModel showDocumentList;
-				 whenChangedDo: [ :val | self guiSetListShowing: val ]);
+			label: 'Show List';
+			state: layoutModel showDocumentList;
+			whenChangedDo: [ :val | self guiSetListShowing: val ]);
 		right: (spButtonBar newDropList
-				 help: 'source view';
-				 items: layoutModel sourceModes;
-				 whenSelectedItemChangedDo: [ :item | 
-					 self guiSetSourceMode: item ]);
+			help: 'source view';
+			items: layoutModel sourceModes;
+			whenSelectedItemChangedDo: [ :item | self guiSetSourceMode: item ]);
 		right: (saveButton := spButtonBar newButton
-				 label: 'Save';
-				 state: layoutModel showSource;
-				  action: [ self guiSaveSource ]);
+			label: 'Save';
+			state: layoutModel showSource;
+			action: [ self guiSaveSource ]);
 		right: (spButtonBar newCheckBox
-				 label: 'Show Source';
-				 state: layoutModel showSource;
-				 whenChangedDo: [ :val | self guiSetSourceShowing: val ])
+			label: 'Show Source';
+			state: layoutModel showSource;
+			whenChangedDo: [ :val | self guiSetSourceShowing: val ])
 ]
 
 { #category : #initialization }
@@ -358,13 +363,6 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 			Browser := nil ]
 ]
 
-{ #category : #layout }
-MicDocumentBrowser >> layout [
-	"I use dynamic layout"
-	layout ifNil: [ self setTopLayout  ].
-	^ layout 
-]
-
 { #category : #private }
 MicDocumentBrowser >> loadedDocsInWorkspace [
 	"I return all the doc folders which exist in the local iceberg repository"
@@ -379,13 +377,7 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
 	"I set the layout of the browser. The dynamic part of the layout is done by layoutModel"
-	self layout: (SpBoxLayout newTopToBottom
-		add: (layoutModel
-			layoutList: spDocumentList
-			rendering: spRendering
-			source: spSource);
-		add: spButtonBar expand: false;
-		yourself)
+	self layout: self topLayout
 ]
 
 { #category : #'dirty indication' }
@@ -398,14 +390,26 @@ MicDocumentBrowser >> showSourceNotDirty [
 	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> topLayout [
+
+	^ SpBoxLayout newTopToBottom
+		add: (layoutModel
+			layoutList: spDocumentList
+			rendering: spRendering
+			source: spSource);
+		add: spButtonBar expand: false;
+		yourself
+]
+
 { #category : #updating }
 MicDocumentBrowser >> updateSourcePresenter [
 	""
-	layoutModel showSource ifTrue: [ 
-		self disableEventsDuring: [ 
+	layoutModel showSource ifTrue: [
+		self disableEventsDuring: [
 			spSource
 				editable: documentModel canSave;
-				text: documentModel source.
+				text: (documentModel source ifNil: [ '' ]).
 			spSource adapter color: (documentModel canSave
 					 ifTrue: [ self theme backgroundColor ]
 					 ifFalse: [ self theme lightBaseColor ]).
