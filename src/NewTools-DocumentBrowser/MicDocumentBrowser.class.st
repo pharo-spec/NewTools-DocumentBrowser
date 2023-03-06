@@ -22,7 +22,7 @@ In order to prevent cycles in the events, all methods called through gui actions
 "
 Class {
 	#name : #MicDocumentBrowser,
-	#superclass : #SpPresenter,
+	#superclass : #StPresenter,
 	#instVars : [
 		'spButtonBar',
 		'spDocumentList',
@@ -32,8 +32,7 @@ Class {
 		'documentRoots',
 		'documentModel',
 		'layoutModel',
-		'disableEvents',
-		'browserApp'
+		'disableEvents'
 	],
 	#classVars : [
 		'Browser'
@@ -105,7 +104,7 @@ MicDocumentBrowser class >> serviceOpenMicrodownDirectory [
 
 	^ (SimpleServiceEntry
 		provider: self 
-		label: 'Open Micodown document'
+		label: 'Open Microdown document'
 		selector: #openDocument:
 		description: 'Open a this document in Microdown Document Browser'
 		buttonLabel: 'Microdown')
@@ -118,7 +117,7 @@ MicDocumentBrowser class >> serviceOpenMicrodownDocument [
 
 	^ (SimpleServiceEntry
 		provider: self 
-		label: 'Open Micodown document'
+		label: 'Open Microdown document'
 		selector: #openDocument:
 		description: 'Open a this document in Microdown Document Browser'
 		buttonLabel: 'Microdown')
@@ -142,6 +141,19 @@ MicDocumentBrowser >> addRoot: document [
 	
 ]
 
+{ #category : #events }
+MicDocumentBrowser >> cancelSourceChange [
+	"called by whenResetDo: on spSource "
+	disableEvents ifTrue: [ ^ self ].
+	documentModel isDirty ifFalse: [ ^ self ].
+
+	self disableEventsDuring: [ 
+		documentModel source: nil.
+		self showSourceNotDirty.
+		spSource 
+			text: documentModel source]
+]
+
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
 	"I am a utility method to find children in a node"
@@ -160,11 +172,11 @@ MicDocumentBrowser >> childrenOf: aNode [
 MicDocumentBrowser >> connectPresenters [
 	"Listen to gui input"
 	spDocumentList 
-		whenSelectionChangedDo: [ :selection | self guiNewSelection: selection selectedItem ].
+		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
 	spSource 
-		whenSubmitDo: [:text|  self guiSaveSource ];
-		whenResetDo: [ :text | self guiCancelSourceChange ];
-		whenTextChangedDo: [ :newSource | self guiSetSource: newSource ]
+		whenSubmitDo: [:text|  self saveSource ];
+		whenResetDo: [ :text | self cancelSourceChange ];
+		whenTextChangedDo: [ :newSource | self setSource: newSource ]
 ]
 
 { #category : #private }
@@ -175,6 +187,12 @@ MicDocumentBrowser >> defaultDocumentRoots [
 			collect: #asMicResourceReference
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> defaultLayout [
+
+	^ self topLayout
+]
+
 { #category : #events }
 MicDocumentBrowser >> disableEventsDuring: aBlock [
 	| old | 
@@ -182,8 +200,7 @@ MicDocumentBrowser >> disableEventsDuring: aBlock [
 	and only the outermost will reset back to the default false value"
 	old := disableEvents.
 	disableEvents := true.
-	aBlock value.
-	disableEvents := old. 
+	aBlock ensure: [ disableEvents := old ]
 ]
 
 { #category : #navigation }
@@ -219,28 +236,88 @@ MicDocumentBrowser >> documentSelected: document [
 		(self displayStringOf: documentModel resourceReference)
 ]
 
-{ #category : #events }
-MicDocumentBrowser >> guiCancelSourceChange [
-	"called by whenResetDo: on spSource "
-	disableEvents ifTrue: [ ^ self ].
-	documentModel isDirty ifFalse: [ ^ self ].
+{ #category : #initialization }
+MicDocumentBrowser >> initialize [
+	"Initialize my models first"
+	documentModel := MicDocumentBrowserModel new.
+	layoutModel := MicDocumentBrowserLayoutModel new.
+	disableEvents := false.
+	super initialize
+]
 
-	self disableEventsDuring: [ 
-		documentModel source: nil.
-		self showSourceNotDirty.
-		spSource 
-			text: documentModel source]
+{ #category : #initialization }
+MicDocumentBrowser >> initializeButtons [
+	"initialize the button bar"
+	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
+	spButtonBar
+		left: (spButtonBar newCheckBox
+			label: 'Show List';
+			state: layoutModel showDocumentList;
+			whenChangedDo: [ :val | self setListShowing: val ]);
+		right: (spButtonBar newDropList
+			help: 'source view';
+			items: layoutModel sourceModes;
+			whenSelectedItemChangedDo: [ :item | self setSourceMode: item ]);
+		right: (saveButton := spButtonBar newButton
+			label: 'Save';
+			state: layoutModel showSource;
+			action: [ self saveSource ]);
+		right: (spButtonBar newCheckBox
+			label: 'Show Source';
+			state: layoutModel showSource;
+			whenChangedDo: [ :val | self setSourceShowing: val ])
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> initializePresenters [
+
+	super initializePresenters.
+
+	spDocumentList := self newTree.
+	spDocumentList
+		roots: self documentRoots;
+		children: [ :aNode | self childrenOf: aNode ];
+		display: [ :aNode | self displayStringOf: aNode ];
+		displayIcon: [ :aNode | self displayIconOf: aNode ].
+	spRendering := self instantiate: MicrodownPresenter.
+	spSource := self newText.
+	self initializeButtons
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> initializeWindow: aWindowPresenter [
+	"Adds window closing behaviour"
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter
+		initialExtent: 1000@600;
+		title: 'Microdown document browser'.
+	aWindowPresenter
+		whenOpenedDo: [ Browser := self ];
+		whenClosedDo: [
+			self saveSource.
+			Browser := nil ]
+]
+
+{ #category : #private }
+MicDocumentBrowser >> loadedDocsInWorkspace [
+	"I return all the doc folders which exist in the local iceberg repository"
+	| iceRepository githubUsers |
+	iceRepository := FileLocator localDirectory / 'iceberg'.
+	githubUsers := iceRepository directories.
+	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
+		collect: [ :project | project directories ]) flattened
+		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename asLowercase ]
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiNewSelection: selection [
+MicDocumentBrowser >> newSelection: selection [
 	"I am called when a user selects a new element in spDocumentList"
 	disableEvents ifTrue: [ ^ self ].
 	self documentSelected: selection
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiSaveSource [
+MicDocumentBrowser >> saveSource [
 	"called by save button or accept in spSource"
 	| path sourceSelection sourceScroll |
 	disableEvents ifTrue: [ ^ self ].
@@ -266,14 +343,14 @@ MicDocumentBrowser >> guiSaveSource [
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiSetListShowing: aBoolean [
+MicDocumentBrowser >> setListShowing: aBoolean [
 	"Change layout to include the document list or not"
 	layoutModel showDocumentList: aBoolean.
 	self disableEventsDuring: [ self setTopLayout ] 
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiSetSource: newSource [
+MicDocumentBrowser >> setSource: newSource [
 	"called by changes to spSource"
 	disableEvents ifTrue: [ ^ self ].
 	documentModel source: newSource.
@@ -282,14 +359,14 @@ MicDocumentBrowser >> guiSetSource: newSource [
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiSetSourceMode: sourceMode [
+MicDocumentBrowser >> setSourceMode: sourceMode [
 	"Change the layout as how spRendering and spSource are placed"
 	layoutModel sourceMode: sourceMode.
 	self disableEventsDuring: [ self setTopLayout  ]
 ]
 
 { #category : #events }
-MicDocumentBrowser >> guiSetSourceShowing: showSource [
+MicDocumentBrowser >> setSourceShowing: showSource [
 	"change layout to include spSource or not"
 	layoutModel showSource: showSource.
 	self disableEventsDuring: [
@@ -297,119 +374,10 @@ MicDocumentBrowser >> guiSetSourceShowing: showSource [
 		self updateSourcePresenter]
 ]
 
-{ #category : #initialization }
-MicDocumentBrowser >> initialize [
-	"Initialize my models first"
-	documentModel := MicDocumentBrowserModel new.
-	layoutModel := MicDocumentBrowserLayoutModel new.
-	disableEvents := false.
-	self intializeApplication.
-	super initialize
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeButtons [
-	"initialize the button bar"
-	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
-	spButtonBar
-		left: (spButtonBar newCheckBox
-				 label: 'Show List';
-				 state: layoutModel showDocumentList;
-				 whenChangedDo: [ :val | self guiSetListShowing: val ]);
-		right: (spButtonBar newDropList
-				 help: 'source view';
-				 items: layoutModel sourceModes;
-				 whenSelectedItemChangedDo: [ :item | 
-					 self guiSetSourceMode: item ]);
-		right: (saveButton := spButtonBar newButton
-				 label: 'Save';
-				 state: layoutModel showSource;
-				  action: [ self guiSaveSource ]);
-		right: (spButtonBar newCheckBox
-				 label: 'Show Source';
-				 state: layoutModel showSource;
-				 whenChangedDo: [ :val | self guiSetSourceShowing: val ])
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializePresenters [
-
-	super initializePresenters.
-	
-	Browser := self.
-	spDocumentList := self newTree.
-	spDocumentList
-		roots: self documentRoots;
-		children: [ :aNode | self childrenOf: aNode ];
-		display: [ :aNode | self displayStringOf: aNode ];
-		displayIcon: [ :aNode | self displayIconOf: aNode ].
-	spRendering := self instantiate: MicrodownPresenter.
-	spSource := self newText.
-	self initializeButtons
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeStylesheet [
-	browserApp backend name = #Morphic
-		ifTrue: [ browserApp  addStyleSheetFromString: '.application [
-    .dirty [ Container { #borderColor: #red, #borderWidth: 1 } ],
-    .notDirty [ Container { #borderColor: #transparent, #borderWidth: 1 } ]]'].
-	browserApp backend name = #Gtk
-		ifTrue: [ browserApp addCSSProviderFromString: '
-.dirty { 
-    border-color: red; 
-    border-width: 1px; }
-' ]
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeWindow: aWindowPresenter [
-	"Adds window closing behaviour"
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter 
-		initialExtent: 1000@600;
-		title: 'Microdown document browser'.
-	aWindowPresenter whenClosedDo: [ 
-		self guiSaveSource.
-		Browser := nil ].
-]
-
-{ #category : #'dirty indication' }
-MicDocumentBrowser >> intializeApplication [
-	browserApp := SpApplication new.
-	self initializeStylesheet.
-	self application: browserApp.
-	
-]
-
-{ #category : #layout }
-MicDocumentBrowser >> layout [
-	"I use dynamic layout"
-	layout ifNil: [ self setTopLayout  ].
-	^ layout 
-]
-
-{ #category : #private }
-MicDocumentBrowser >> loadedDocsInWorkspace [
-	"I return all the doc folders which exist in the local iceberg repository"
-	| iceRepository githubUsers |
-	iceRepository := FileLocator localDirectory / 'iceberg'.
-	githubUsers := iceRepository directories.
-	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
-		collect: [ :project | project directories ]) flattened
-		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename asLowercase ]
-]
-
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
 	"I set the layout of the browser. The dynamic part of the layout is done by layoutModel"
-	self layout: (SpBoxLayout newTopToBottom
-		add: (layoutModel
-			layoutList: spDocumentList
-			rendering: spRendering
-			source: spSource);
-		add: spButtonBar expand: false;
-		yourself)
+	self layout: self topLayout
 ]
 
 { #category : #'dirty indication' }
@@ -422,14 +390,26 @@ MicDocumentBrowser >> showSourceNotDirty [
 	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> topLayout [
+
+	^ SpBoxLayout newTopToBottom
+		add: (layoutModel
+			layoutList: spDocumentList
+			rendering: spRendering
+			source: spSource);
+		add: spButtonBar expand: false;
+		yourself
+]
+
 { #category : #updating }
 MicDocumentBrowser >> updateSourcePresenter [
 	""
-	layoutModel showSource ifTrue: [ 
-		self disableEventsDuring: [ 
+	layoutModel showSource ifTrue: [
+		self disableEventsDuring: [
 			spSource
 				editable: documentModel canSave;
-				text: documentModel source.
+				text: (documentModel source ifNil: [ '' ]).
 			spSource adapter color: (documentModel canSave
 					 ifTrue: [ self theme backgroundColor ]
 					 ifFalse: [ self theme lightBaseColor ]).

@@ -9,7 +9,7 @@ I override `textAreaExtentChanged` to hook into rescaling of UI. Notice I assume
 Class {
 	#name : #MicScrolledTextMorph,
 	#superclass : #RubScrolledTextMorph,
-	#category : #'Microdown-RichTextPresenter'
+	#category : #'Microdown-RichTextPresenter-Adapters'
 }
 
 { #category : #accessing }
@@ -21,7 +21,7 @@ MicScrolledTextMorph >> font: aFont [
 MicScrolledTextMorph >> textAreaExtentChanged [
 	super textAreaExtentChanged.
 	"When textArea size change, scalable images might need to be redrawn"
-	self model model renderWidth: self width.
+	self model renderWidth: self width.
 	self resetState
 
 ]

@@ -22,7 +22,7 @@ Class {
 MicDocumentBrowserLayoutModel >> initialize [
 	showDocumentList := true.
 	showSource := false.
-	sourceMode := self sourceBotton
+	sourceMode := self sourceBottom
 ]
 
 { #category : #layouting }
@@ -74,7 +74,7 @@ MicDocumentBrowserLayoutModel >> showSource: anObject [
 ]
 
 { #category : #'source modes' }
-MicDocumentBrowserLayoutModel >> sourceBotton [
+MicDocumentBrowserLayoutModel >> sourceBottom [
 
 	^ 'Source bottom'
 ]
@@ -84,7 +84,7 @@ MicDocumentBrowserLayoutModel >> sourceLayouts [
 	"return a dictionary of layout blocks."
 	sourceLayouts ifNotNil: [ ^ sourceLayouts ].
 	^ sourceLayouts := {
-	self sourceBotton 	-> [ :r :s | SpPanedLayout newTopToBottom add: r;add: s; yourself].
+	self sourceBottom 	-> [ :r :s | SpPanedLayout newTopToBottom add: r;add: s; yourself].
 	self sourceTop 		-> [ :r :s | SpPanedLayout newTopToBottom add: s;add: r; yourself].
 	self sourceRight 	-> [ :r :s | SpPanedLayout newLeftToRight add: r;add: s; yourself].
 	self sourceLeft		-> [ :r :s | SpPanedLayout newLeftToRight add: s;add: r; yourself].
