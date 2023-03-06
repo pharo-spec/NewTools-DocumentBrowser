@@ -332,8 +332,7 @@ MicDocumentBrowser >> initializeButtons [
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
-	
-	Browser := self.
+
 	spDocumentList := self newTree.
 	spDocumentList
 		roots: self documentRoots;
@@ -349,12 +348,14 @@ MicDocumentBrowser >> initializePresenters [
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	"Adds window closing behaviour"
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter 
+	aWindowPresenter
 		initialExtent: 1000@600;
 		title: 'Microdown document browser'.
-	aWindowPresenter whenClosedDo: [ 
-		self guiSaveSource.
-		Browser := nil ].
+	aWindowPresenter
+		whenOpenedDo: [ Browser := self ];
+		whenClosedDo: [
+			self guiSaveSource.
+			Browser := nil ]
 ]
 
 { #category : #layout }
