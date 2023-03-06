@@ -11,13 +11,21 @@ MicrodownPresenterTest >> classToTest [
 
 { #category : #tests }
 MicrodownPresenterTest >> testDocumentIsRendered [
+
 	presenter document: (Microdown parse: '# Nice header').
+	"document is processed to be displayed, if we set a document, it will not be 
+	 transformed into a Text until it is build."
+	presenter build.
 	self assert: presenter text asString trim equals: 'Nice header'
 ]
 
 { #category : #tests }
 MicrodownPresenterTest >> testDocumentIsRenderedFromString [
+
 	presenter documentFromString: '# Nice header'.
+	"document is processed to be displayed, if we set a document, it will not be 
+	 transformed into a Text until it is build."
+	presenter build.
 	self assert: presenter text asString trim equals: 'Nice header'
 ]
 
