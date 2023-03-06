@@ -22,7 +22,7 @@ In order to prevent cycles in the events, all methods called through gui actions
 "
 Class {
 	#name : #MicDocumentBrowser,
-	#superclass : #SpPresenter,
+	#superclass : #StPresenter,
 	#instVars : [
 		'spButtonBar',
 		'spDocumentList',
@@ -32,8 +32,7 @@ Class {
 		'documentRoots',
 		'documentModel',
 		'layoutModel',
-		'disableEvents',
-		'browserApp'
+		'disableEvents'
 	],
 	#classVars : [
 		'Browser'
@@ -302,16 +301,7 @@ MicDocumentBrowser >> initialize [
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
 	disableEvents := false.
-	self initializeApplication.
 	super initialize
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeApplication [
-	browserApp := SpApplication new.
-	self initializeStylesheet.
-	self application: browserApp.
-	
 ]
 
 { #category : #initialization }
@@ -353,20 +343,6 @@ MicDocumentBrowser >> initializePresenters [
 	spRendering := self instantiate: MicrodownPresenter.
 	spSource := self newText.
 	self initializeButtons
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> initializeStylesheet [
-	browserApp backend name = #Morphic
-		ifTrue: [ browserApp  addStyleSheetFromString: '.application [
-    .dirty [ Container { #borderColor: #red, #borderWidth: 1 } ],
-    .notDirty [ Container { #borderColor: #transparent, #borderWidth: 1 } ]]'].
-	browserApp backend name = #Gtk
-		ifTrue: [ browserApp addCSSProviderFromString: '
-.dirty { 
-    border-color: red; 
-    border-width: 1px; }
-' ]
 ]
 
 { #category : #initialization }
