@@ -303,6 +303,7 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 	"I return all the doc folders which exist in the local iceberg repository"
 	| iceRepository githubUsers |
 	iceRepository := FileLocator localDirectory / 'iceberg'.
+	iceRepository exists ifFalse: [ ^ #() ].
 	githubUsers := iceRepository directories.
 	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
 		collect: [ :project | project directories ]) flattened
