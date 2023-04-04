@@ -63,33 +63,31 @@ MicPharoPackageCommentResourceReference >> categoryName [
 { #category : #private }
 MicPharoPackageCommentResourceReference >> childrenOfAllCategories [
 	"I return the children of 'comment://package/' "
-	^ (SystemOrganizer default categories 
-		reject: [ :cat | cat beginsWith: 'BaselineOf' ]
-		thenCollect: [:cat | self reduceCategoryName: cat]) 
-		asSet asArray sort
-			collect: [ :cat | ('comment://package/', cat) asMicResourceReference  ]
+
+	^ (Smalltalk organization categories
+		   reject: [ :cat | cat beginsWith: 'BaselineOf' ]
+		   thenCollect: [ :cat | self reduceCategoryName: cat ]) asSet asArray sort collect: [ :cat | ('comment://package/' , cat) asMicResourceReference ]
 ]
 
 { #category : #accessing }
 MicPharoPackageCommentResourceReference >> childrenOfCategoryPrefix [
 	"I am a prefix of a set of categories, 
 	my children are those categories with one more depth in their name"
+
 	| children |
 	categoryName ifEmpty: [ ^ self childrenOfAllCategories ].
-	children := SystemOrganizer default categories
-				select: [ :cat |  (cat beginsWith: categoryName) and: [ self isPackage: cat ] ]
-				thenCollect: [:cat | ('comment://package/', cat) asMicResourceReference ].
+	children := Smalltalk organization categories
+		            select: [ :cat | (cat beginsWith: categoryName) and: [ self isPackage: cat ] ]
+		            thenCollect: [ :cat | ('comment://package/' , cat) asMicResourceReference ].
 
 	^ children
-	
 ]
 
 { #category : #accessing }
 MicPharoPackageCommentResourceReference >> childrenOfPackageWithTag [
 	"my categoryName is a package tag, children are the classes under that tag"
-	^ (SystemOrganizer default classesInCategory:  categoryName)
-			collect: [:cl | ('comment://class/',cl name) asMicResourceReference]
-	 
+
+	^ (Smalltalk organization classesInCategory: categoryName) collect: [ :class | ('comment://class/' , class name) asMicResourceReference ]
 ]
 
 { #category : #initialization }
