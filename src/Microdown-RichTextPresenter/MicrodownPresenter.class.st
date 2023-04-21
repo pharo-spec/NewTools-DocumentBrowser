@@ -12,8 +12,14 @@ Class {
 		'#document => ObservableSlot',
 		'#textStyler => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextPresenter'
+	#category : #'Microdown-RichTextPresenter-Widgets'
 }
+
+{ #category : #specs }
+MicrodownPresenter class >> adapterName [
+
+	^ #MicMorphicMicrodownAdapter
+]
 
 { #category : #'instance creation' }
 MicrodownPresenter class >> open [
@@ -22,29 +28,19 @@ MicrodownPresenter class >> open [
 	(self new document: MicTextPresenter cheetSheet) open
 ]
 
-{ #category : #composing }
-MicrodownPresenter >> compose [
-
-	self document ifNil: [ ^ self ].
-	self text: (MicRichTextComposer new 
-		textStyler: self textStyler; 
-		asRichText: self document)
-]
-
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> document [
 
 	^ document
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> document: aNode [
 
-	document := aNode.
-	self compose.
+	document := aNode
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> documentFromString: aString [
 
 	self document: (self parserClass parse: aString)
@@ -52,31 +48,30 @@ MicrodownPresenter >> documentFromString: aString [
 		
 ]
 
-{ #category : #initialization }
-MicrodownPresenter >> parserClass [ 
+{ #category : #private }
+MicrodownPresenter >> parserClass [
 	^ Microdown
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> textStyler [
-	textStyler ifNil: [ textStyler := MicTextStyler new ].
-	^ textStyler
+
+	^ textStyler ifNil: [ textStyler := MicTextStyler new ]
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MicrodownPresenter >> textStyler: styler [
 
-	textStyler := styler.
-	self compose
+	textStyler := styler
 ]
 
-{ #category : #enumerating }
+{ #category : #'api - events' }
 MicrodownPresenter >> whenDocumentChangedDo: aBlock [
 
 	self property: #document whenChangedDo: aBlock
 ]
 
-{ #category : #enumerating }
+{ #category : #'api - events' }
 MicrodownPresenter >> whenTextStylerChangedDo: aBlock [
 
 	self property: #textStyler whenChangedDo: aBlock

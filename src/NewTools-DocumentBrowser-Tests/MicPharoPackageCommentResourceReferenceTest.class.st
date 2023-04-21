@@ -114,7 +114,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	| ref dir |
 	ref := 'comment://package/NewTools-DocumentBrowser' asMicResourceReference.
 	dir := ref loadChildren.
-	self assert: dir size equals: 3.
+	self assert: dir size equals: 3
 ]
 
 { #category : #tests }
