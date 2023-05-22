@@ -13,7 +13,7 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 			baseline: 'Microdown'
 			with: [
 				spec
-					repository: 'github://pillar-markup/Microdown:master/src';
+					repository: 'github://pillar-markup/Microdown:integration/src';
 					loads: #('RichText') ].
 
 		spec
