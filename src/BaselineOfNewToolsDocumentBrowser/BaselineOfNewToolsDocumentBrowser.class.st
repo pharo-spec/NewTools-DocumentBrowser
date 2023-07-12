@@ -18,7 +18,7 @@ BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 
 		spec
 			baseline: 'Iceberg'
-			with: [ spec repository: 'github://pharo-vcs/Iceberg:dev-2.0' ].
+			with: [ spec repository: 'github://pharo-vcs/Iceberg:v2.1.1' ].
 
 		spec
 			package: #'Microdown-RichTextPresenter'
