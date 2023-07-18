@@ -86,13 +86,14 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
+
 	| dir prefixes |
 	dir := 'comment://package/' asMicResourceReference loadChildren.
 	self assert: (dir size between: 100 and: 200).
 	"check that four known prefises are in the found set."
-	prefixes := dir collect: [ :ref | ref uri segments first ].
-	self assert: (#(AST Collections Refactoring Iceberg) \ prefixes) isEmpty.
-	self assert: (prefixes allSatisfy: [:prefix | (prefix occurrencesOf: $-) = 0])
+	prefixes := dir collect: [ :ref | ref categoryName ].
+	self assertEmpty: #( AST Collections Refactoring Iceberg ) \ prefixes.
+	self assert: (prefixes noneSatisfy: [ :prefix | prefix includes: $- ])
 ]
 
 { #category : #tests }
@@ -111,10 +112,13 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
-	| ref dir |
-	ref := 'comment://package/NewTools-DocumentBrowser' asMicResourceReference.
-	dir := ref loadChildren.
-	self assert: dir size equals: 4
+
+	| dir |
+	dir := 'comment://package/NewTools-DocumentBrowser' asMicResourceReference loadChildren.
+	self
+		assertCollection: (dir collect: [ :ref | ref categoryName ])
+		hasSameElements:
+		#( 'NewTools-DocumentBrowser-BlockModel' 'NewTools-DocumentBrowser-Deprecated' 'NewTools-DocumentBrowser-GUI' 'NewTools-DocumentBrowser-ResourceModel' )
 ]
 
 { #category : #tests }
