@@ -68,7 +68,7 @@ MicPharoPackageCommentResourceReference >> childrenOfAllPackages [
 
 	^ (self packageOrganizer packageNames
 		   reject: [ :package | package beginsWith: 'BaselineOf' ]
-		   thenCollect: [ :package | self reducePackgeName: package ]) asSet asArray sort collect: [ :package |
+		   thenCollect: [ :package | self reducePackageName: package ]) asSet asArray sort collect: [ :package |
 		  ('comment://package/' , package) asMicResourceReference ]
 ]
 
@@ -97,7 +97,7 @@ MicPharoPackageCommentResourceReference >> childrenOfPackageWithTag [
 	"In case I matche a package tag, children are the classes under that tag"
 
 	^ ((self packageOrganizer packageNamed: self packageName ifAbsent: [ ^ #(  ) ])
-		classTagNamed: self tagName ifAbsent: [ #(  ) ]) classes
+		classTagNamed: self tagName ifAbsent: [ ^ #(  ) ]) classes
 			collect: [ :class | ('comment://class/' , class name) asMicResourceReference ]
 ]
 
@@ -186,7 +186,7 @@ MicPharoPackageCommentResourceReference >> reducePackageName: aString toLevel: l
 ]
 
 { #category : #'private - utilities' }
-MicPharoPackageCommentResourceReference >> reducePackgeName: aPackageName [
+MicPharoPackageCommentResourceReference >> reducePackageName: aPackageName [
 
 	^ self reducePackageName: aPackageName toLevel: self level + 1
 ]
