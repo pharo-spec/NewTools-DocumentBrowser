@@ -16,8 +16,8 @@ To aid with both, I use a two level caching system.
 - Instance side - as I can get the whole folder structure in one call, I cache this structure.
 "
 Class {
-	#name : #MicGitHubRessourceReference,
-	#superclass : #MicAbsoluteResourceReference,
+	#name : 'MicGitHubRessourceReference',
+	#superclass : 'MicAbsoluteResourceReference',
 	#instVars : [
 		'user',
 		'project',
@@ -25,39 +25,40 @@ Class {
 		'docFolder',
 		'children'
 	],
-	#category : #'NewTools-DocumentBrowser-GitHubResource'
+	#category : 'NewTools-DocumentBrowser-GitHubResource',
+	#package : 'NewTools-DocumentBrowser-GitHubResource'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicGitHubRessourceReference class >> handlesUriScheme: scheme [
 	^ scheme = 'github'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> binaryReadStream [
 	"return the binaryStream I refer to"
 	^ self error: 'Binary streams to github items not yet supporteds'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> branch [
 
 	^ branch
 ]
 
-{ #category : #'document browser' }
+{ #category : 'document browser' }
 MicGitHubRessourceReference >> browserIcon [
 	^ self iconNamed: #github
 ]
 
-{ #category : #'document browser' }
+{ #category : 'document browser' }
 MicGitHubRessourceReference >> browserTitle [
 	^ uri query
 		ifNotNil:[:query | query at: #fullPath]
 		ifNil: [ uri printString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> contents [
 	"This is inefficient, but can be done"
 	| response content |
@@ -68,13 +69,13 @@ MicGitHubRessourceReference >> contents [
 	^ content base64Decoded asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> docFolder [
 
 	^ docFolder
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> extractFolderReferencesFrom: response [
 	| folders raw docPath |
 	folders := (response at: #tree) select: [ :elem | (elem at: #type) = #tree].
@@ -85,7 +86,7 @@ MicGitHubRessourceReference >> extractFolderReferencesFrom: response [
 		MicResourceReference fromUri: (raw ,':', (folder at: #sha),'?fullPath=', docPath, '/', (folder at: #path))]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
 	| docs path |
 	docs := (response at: #tree) select: [ :elem | 
@@ -95,12 +96,12 @@ MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
 	^ docs collect: [ :doc |  MicResourceReference fromUri: path, '/', (doc at: #path)]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> githubApi [
 	^ MicGitHubAPI new
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> githubPathLookup [
 	"I return the response object from the trees api - see https://docs.github.com/en/rest/reference/git#get-a-tree"
 	| request response |
@@ -115,14 +116,14 @@ MicGitHubRessourceReference >> githubPathLookup [
 	^ response
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> githubTreesApiRequest [
 	"See documentation at: https://docs.github.com/en/rest/reference/git#get-a-tree"
 	 ^ 'repos/{1}/{2}/git/trees/{3}' 
 			format: { user. project. branch }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> loadChildren [
 	children 
 		ifNil:[ | response folders microdownDocs|
@@ -133,14 +134,14 @@ MicGitHubRessourceReference >> loadChildren [
 	^ children
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> lookupDefaultBranch [
 	
 	^ self githubApi defaultBranch: user project: project
 	
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubRessourceReference >> pathStringForRawAccess [
 	"I return the path string to be used for the raw.githubusercontent.com access to blobs"
 	| path |
@@ -153,13 +154,13 @@ MicGitHubRessourceReference >> pathStringForRawAccess [
 	^ path ,'/', (uri query at: #fullPath ifAbsent: [''])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> project [
 
 	^ project
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> uri: docUri [
 	"I assume docUri to be a ZnURI on the form: github://user/project[:branch][/pathToDoc]"
 	| projectAndBranch |
@@ -175,7 +176,7 @@ MicGitHubRessourceReference >> uri: docUri [
 		ifFalse: [ #() ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubRessourceReference >> user [
 
 	^ user

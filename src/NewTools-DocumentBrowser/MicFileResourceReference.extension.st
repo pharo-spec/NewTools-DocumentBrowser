@@ -1,6 +1,6 @@
-Extension { #name : #MicFileResourceReference }
+Extension { #name : 'MicFileResourceReference' }
 
-{ #category : #'*NewTools-DocumentBrowser' }
+{ #category : '*NewTools-DocumentBrowser' }
 MicFileResourceReference >> browserIcon [ 
 	^ self isDirectory 
 		ifTrue: [ self iconNamed: #packageColored]

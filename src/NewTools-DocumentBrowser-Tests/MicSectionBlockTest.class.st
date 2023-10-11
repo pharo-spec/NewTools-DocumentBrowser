@@ -1,10 +1,12 @@
 Class {
-	#name : #MicSectionBlockTest,
-	#superclass : #TestCase,
-	#category : #'NewTools-DocumentBrowser-Tests-BlockModel'
+	#name : 'MicSectionBlockTest',
+	#superclass : 'TestCase',
+	#category : 'NewTools-DocumentBrowser-Tests-BlockModel',
+	#package : 'NewTools-DocumentBrowser-Tests',
+	#tag : 'BlockModel'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testEmpty [
 	"An empty document should not break sectioning"
 	| doc sec |
@@ -16,7 +18,7 @@ MicSectionBlockTest >> testEmpty [
 	self assert: sec subsections children isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testNoHeader [
 	| doc sec |
 	doc := Microdown parse: 'This is **just**
@@ -28,7 +30,7 @@ a few lines'.
 	self assert: sec subsections children isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testOneHeader [
 	"With one header, only one section is created and become the root"
 	| doc sec |
@@ -43,7 +45,7 @@ a few lines'.
 	self assert: sec subsections children isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testOneHeaderWithInitialBody [
 	"With one header, but body, a level 0 section is created and become the root"
 	| doc sec |
@@ -60,7 +62,7 @@ a few lines'.
 	self assert: sec subsections children size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testOneHeaderWithSubHeader [
 	"With one top header, only one section is created and become the root, subsections as its subsections"
 	| doc sec |
@@ -73,7 +75,7 @@ MicSectionBlockTest >> testOneHeaderWithSubHeader [
 	self assert: sec subsections children size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testSubHeaders [
 	"Check more complex mixture of sections"
 	| doc sec header1 |
@@ -93,7 +95,7 @@ MicSectionBlockTest >> testSubHeaders [
 	self assert: header1 subsections children second level equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testTwoHeaders [
 	"With several headers, the top section has empty header"
 	| doc sec |
@@ -110,7 +112,7 @@ a few lines
 	self assert: sec subsections children second header children first text equals: 'Header2'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testTwoHeadersAtDeeperLevel [
 	"With several headers, the top section has empty header"
 	| doc sec |
@@ -127,7 +129,7 @@ a few lines
 	self assert: sec subsections children second header children first text equals: 'Header2'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSectionBlockTest >> testTwoHeadersWithInitialBody [
 	"With several headers, the top section has empty header"
 	| doc sec |

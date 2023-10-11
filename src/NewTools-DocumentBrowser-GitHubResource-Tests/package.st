@@ -1,1 +1,1 @@
-Package { #name : #'NewTools-DocumentBrowser-GitHubResource-Tests' }
+Package { #name : 'NewTools-DocumentBrowser-GitHubResource-Tests' }

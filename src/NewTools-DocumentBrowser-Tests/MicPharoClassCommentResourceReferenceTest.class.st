@@ -2,34 +2,36 @@
 This class contains tests
 "
 Class {
-	#name : #MicPharoClassCommentResourceReferenceTest,
-	#superclass : #TestCase,
+	#name : 'MicPharoClassCommentResourceReferenceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'savedComment'
 	],
-	#category : #'NewTools-DocumentBrowser-Tests-ResourceModel'
+	#category : 'NewTools-DocumentBrowser-Tests-ResourceModel',
+	#package : 'NewTools-DocumentBrowser-Tests',
+	#tag : 'ResourceModel'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicPharoClassCommentResourceReferenceTest >> setUp [
 	super setUp.
 	savedComment := self class comment.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicPharoClassCommentResourceReferenceTest >> tearDown [ 
 	self class comment: savedComment.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoClassCommentResourceReferenceTest >> testClassComment [
 	| ref |
 	ref := 'comment://class/Microdown' asMicResourceReference.
 	self assert: ref contents equals: Microdown comment
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoClassCommentResourceReferenceTest >> testClassCommentWrite [
 	| ref myName |
 	myName := self class name.
@@ -38,7 +40,7 @@ MicPharoClassCommentResourceReferenceTest >> testClassCommentWrite [
 	self assert: self class comment equals: 'Writing to comment'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoClassCommentResourceReferenceTest >> testSetup [
 	| ref |
 	ref := 'comment://class/Microdown' asMicResourceReference.
@@ -46,7 +48,7 @@ MicPharoClassCommentResourceReferenceTest >> testSetup [
 	self assert: ref classReference equals: Microdown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoClassCommentResourceReferenceTest >> testSetup_metaClass [
 	| ref |
 	ref := 'comment://class/Microdown/class' asMicResourceReference.

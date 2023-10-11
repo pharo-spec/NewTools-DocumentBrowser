@@ -4,17 +4,19 @@ I am a superclass for providing a common interface to class and package comments
 Please see the comments in my subclasses for further info.
 "
 Class {
-	#name : #MicPharoCommentResourceReference,
-	#superclass : #MicAbsoluteResourceReference,
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#name : 'MicPharoCommentResourceReference',
+	#superclass : 'MicAbsoluteResourceReference',
+	#category : 'NewTools-DocumentBrowser-ResourceModel',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'ResourceModel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicPharoCommentResourceReference class >> handlesUriScheme: scheme [
 	^ scheme = 'comment'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicPharoCommentResourceReference class >> newFromUri: aUri [
 	"I assume aUri to be a ZnUrl"
 	aUri host = 'class'
@@ -26,7 +28,7 @@ MicPharoCommentResourceReference class >> newFromUri: aUri [
 	) signal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoCommentResourceReference >> binaryReadStream [
 	"comments are not in binary format"
 	MicResourceReferenceError signal: 'Pharo comments cannot be read in binary format'

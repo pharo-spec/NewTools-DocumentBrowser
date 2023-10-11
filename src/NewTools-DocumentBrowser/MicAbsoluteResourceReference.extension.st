@@ -1,11 +1,11 @@
-Extension { #name : #MicAbsoluteResourceReference }
+Extension { #name : 'MicAbsoluteResourceReference' }
 
-{ #category : #'*NewTools-DocumentBrowser' }
+{ #category : '*NewTools-DocumentBrowser' }
 MicAbsoluteResourceReference >> browserIcon [
 	^ self iconNamed: #book
 ]
 
-{ #category : #'*NewTools-DocumentBrowser' }
+{ #category : '*NewTools-DocumentBrowser' }
 MicAbsoluteResourceReference >> browserTitle [
 	| title slashes |
 	title := self uriString.

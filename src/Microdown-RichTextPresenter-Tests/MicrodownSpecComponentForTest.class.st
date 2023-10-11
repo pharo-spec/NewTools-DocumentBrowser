@@ -1,15 +1,16 @@
 Class {
-	#name : #MicrodownSpecComponentForTest,
-	#superclass : #SpPresenter,
+	#name : 'MicrodownSpecComponentForTest',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'mdPresenter',
 		'doc1',
 		'doc2'
 	],
-	#category : #'Microdown-RichTextPresenter-Tests'
+	#category : 'Microdown-RichTextPresenter-Tests',
+	#package : 'Microdown-RichTextPresenter-Tests'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicrodownSpecComponentForTest class >> defaultLayout [ 
 	^ SpBoxLayout newVertical 
 		add: #mdPresenter;
@@ -20,25 +21,25 @@ MicrodownSpecComponentForTest class >> defaultLayout [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MicrodownSpecComponentForTest class >> open [
 	<script>
 	self new openWithSpec
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownSpecComponentForTest >> doc1 [
 
 	^ doc1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownSpecComponentForTest >> doc2 [
 
 	^ doc2
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicrodownSpecComponentForTest >> initializePresenter [
 	mdPresenter := self instantiate: MicrodownPresenter.
 	doc1 := self newButton
@@ -49,18 +50,18 @@ MicrodownSpecComponentForTest >> initializePresenter [
 		action: [ self setDoc2 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownSpecComponentForTest >> mdPresenter [
 
 	^ mdPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicrodownSpecComponentForTest >> setDoc1 [
 	mdPresenter document: (Microdown parse: '# Header 1')
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicrodownSpecComponentForTest >> setDoc2 [
 	mdPresenter document: (Microdown parse: '# Header 2')
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #Text }
+Extension { #name : 'Text' }
 
-{ #category : #'*Microdown-RichTextPresenter' }
+{ #category : '*Microdown-RichTextPresenter' }
 Text >> inspectionRichText [
 	<inspectorPresentationOrder: -1 title: 'RichText'>
 

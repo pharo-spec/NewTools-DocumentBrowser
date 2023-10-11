@@ -1,15 +1,16 @@
 Class {
-	#name : #MicrodownPresenterTest,
-	#superclass : #MicTextPresenterTest,
-	#category : #'Microdown-RichTextPresenter-Tests'
+	#name : 'MicrodownPresenterTest',
+	#superclass : 'MicTextPresenterTest',
+	#category : 'Microdown-RichTextPresenter-Tests',
+	#package : 'Microdown-RichTextPresenter-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownPresenterTest >> classToTest [
 	^ MicrodownPresenter 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownPresenterTest >> testDocumentIsRendered [
 
 	presenter document: (Microdown parse: '# Nice header').
@@ -19,7 +20,7 @@ MicrodownPresenterTest >> testDocumentIsRendered [
 	self assert: presenter text asString trim equals: 'Nice header'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownPresenterTest >> testDocumentIsRenderedFromString [
 
 	presenter documentFromString: '# Nice header'.
@@ -29,7 +30,7 @@ MicrodownPresenterTest >> testDocumentIsRenderedFromString [
 	self assert: presenter text asString trim equals: 'Nice header'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownPresenterTest >> testwhenDocumentChangedDo [
 	| wasHere |
 	wasHere := false.
@@ -38,7 +39,7 @@ MicrodownPresenterTest >> testwhenDocumentChangedDo [
 	self assert: wasHere
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownPresenterTest >> testwhenTextStylerChangedDo [
 	| wasHere |
 	wasHere := false.

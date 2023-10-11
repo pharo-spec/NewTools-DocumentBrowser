@@ -3,16 +3,18 @@ I am a presenter combining two button bars, left and right, with a space inbetwe
 Adding to the left side is done using `left:`, and the right side using `right:`
 "
 Class {
-	#name : #MicDocumentBrowserButtonBar,
-	#superclass : #SpPresenter,
+	#name : 'MicDocumentBrowserButtonBar',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'left',
 		'right'
 	],
-	#category : #'NewTools-DocumentBrowser-GUI'
+	#category : 'NewTools-DocumentBrowser-GUI',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'GUI'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserButtonBar >> initializePresenters [
 
 	super initializePresenters.
@@ -26,13 +28,13 @@ MicDocumentBrowserButtonBar >> initializePresenters [
 		yourself)
 ]
 
-{ #category : #'api - adding' }
+{ #category : 'api - adding' }
 MicDocumentBrowserButtonBar >> left: button [
 
 	left add: button
 ]
 
-{ #category : #'api - adding' }
+{ #category : 'api - adding' }
 MicDocumentBrowserButtonBar >> right: button [
 
 	right add: button

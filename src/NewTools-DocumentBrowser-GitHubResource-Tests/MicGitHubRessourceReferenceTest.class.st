@@ -2,19 +2,20 @@
 A MicGitHubRessourceReferenceTest is a test class for testing the behavior of MicGitHubRessourceReference
 "
 Class {
-	#name : #MicGitHubRessourceReferenceTest,
-	#superclass : #TestCase,
-	#category : #'NewTools-DocumentBrowser-GitHubResource-Tests'
+	#name : 'MicGitHubRessourceReferenceTest',
+	#superclass : 'TestCase',
+	#category : 'NewTools-DocumentBrowser-GitHubResource-Tests',
+	#package : 'NewTools-DocumentBrowser-GitHubResource-Tests'
 }
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 MicGitHubRessourceReferenceTest >> ensureApi: anInteger for: aFullBlockClosure [ 
 	MicGitHubAPI apiCallsRemaining >= anInteger 
 		ifTrue: [ aFullBlockClosure value ]
 		ifFalse: [ self skip: 'Rate limit exhaused' ]
 ]
 
-{ #category : #'test data' }
+{ #category : 'test data' }
 MicGitHubRessourceReferenceTest >> sampleTreeResponse [
 
 	^ { 
@@ -75,7 +76,7 @@ MicGitHubRessourceReferenceTest >> sampleTreeResponse [
 		  asDictionary
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testContents [
 	|uri ref contents|
 	self ensureApi: 4 for: [ "need one for default branch, and one for each level of directory"
@@ -86,7 +87,7 @@ MicGitHubRessourceReferenceTest >> testContents [
 			assert: (contents beginsWith: '# Test documents' )]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testExtractFolderReferencesFrom [
 
 	| uri ref response folders expectedRaw |
@@ -103,7 +104,7 @@ MicGitHubRessourceReferenceTest >> testExtractFolderReferencesFrom [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testExtractMicrodownDocReferencesFrom [
 
 	| uri ref response documents expectedRaw |
@@ -119,7 +120,7 @@ MicGitHubRessourceReferenceTest >> testExtractMicrodownDocReferencesFrom [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testGithubTreesApiRequest [
 	|uri ref|
 	uri := 'github://JohnDoe/Calculator:devBranch/path/to/docs'.
@@ -129,7 +130,7 @@ MicGitHubRessourceReferenceTest >> testGithubTreesApiRequest [
 		equals: 'repos/johndoe/Calculator/git/trees/devBranch'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testLoadChildren [
 	|uri ref children|
 	self ensureApi: 3 for: [
@@ -142,7 +143,7 @@ MicGitHubRessourceReferenceTest >> testLoadChildren [
 		self assert: (children allSatisfy: [:child | child isKindOf: MicAbsoluteResourceReference ])]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testUri [
 	|uri ref|
 	uri := 'github://JohnDoe/Calculator:devBranch/path/to/docs'.
@@ -154,7 +155,7 @@ MicGitHubRessourceReferenceTest >> testUri [
 	self assert: ref docFolder equals: { 'path'. 'to'. 'docs' }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testUri_defaultBranch [
 	|uri ref|
 	self ensureApi: 1 for: [ "needs one api callto establish default branch"
@@ -164,7 +165,7 @@ MicGitHubRessourceReferenceTest >> testUri_defaultBranch [
 		self assert: ref branch equals: 'main']
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo [
 	|uri ref|
 	self ensureApi: 1 for: [ "needs one api callto establish default branch"
@@ -174,7 +175,7 @@ MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo [
 		self assert: (ref branch beginsWith: 'Pharo')]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo_withDoc [
 	|uri ref|
 	uri := 'github://pharo-project/pharo:dummyBranch/path/to/docs'.
@@ -182,7 +183,7 @@ MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo_withDoc [
 	self assert: ref docFolder equals: { 'path'. 'to'. 'docs' }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubRessourceReferenceTest >> testUri_defaultPath [
 	|uri ref|
 	uri := 'github://JohnDoe/Calculator:devBranch'.

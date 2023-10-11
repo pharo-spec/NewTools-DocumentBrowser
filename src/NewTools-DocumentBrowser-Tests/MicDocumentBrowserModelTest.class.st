@@ -4,40 +4,42 @@ A MicDocumentBrowserModelTest is a test class for testing the behavior of MicDoc
 This comment has `comment://class/MicDocumentBrowserModelTest` as micResourceReference
 "
 Class {
-	#name : #MicDocumentBrowserModelTest,
-	#superclass : #TestCase,
+	#name : 'MicDocumentBrowserModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model'
 	],
-	#category : #'NewTools-DocumentBrowser-Tests-GUI'
+	#category : 'NewTools-DocumentBrowser-Tests-GUI',
+	#package : 'NewTools-DocumentBrowser-Tests',
+	#tag : 'GUI'
 }
 
-{ #category : #comments }
+{ #category : 'comments' }
 MicDocumentBrowserModelTest class >> backupComment [
  ^ 'A MicDocumentBrowserModelTest is a test class for testing the behavior of MicDocumentBrowserModel.
 
 This comment has `comment://class/MicDocumentBrowserModelTest` as micResourceReference'
 ]
 
-{ #category : #comments }
+{ #category : 'comments' }
 MicDocumentBrowserModelTest class >> myCommentReference [
 	^ 'comment://class/MicDocumentBrowserModelTest' asMicResourceReference
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicDocumentBrowserModelTest >> setUp [
 	super setUp.
 	
 	model := MicDocumentBrowserModel new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testCanSave [
 	model resourceReference: 'https://nowhere.atall' asMicResourceReference.
 	self deny: model canSave.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testDocument [
 	model resourceReference: self class myCommentReference.
 	self 
@@ -47,7 +49,7 @@ MicDocumentBrowserModelTest >> testDocument [
 		assert: model document isNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testInitilize [
 	self 
 		assert: model resourceReference equals: nil;
@@ -57,7 +59,7 @@ MicDocumentBrowserModelTest >> testInitilize [
 		deny: model isDirty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testIsDirty [
 	model resourceReference: self class myCommentReference.
 	self deny: model isDirty.
@@ -65,7 +67,7 @@ MicDocumentBrowserModelTest >> testIsDirty [
 	self assert: model isDirty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testResourceReference [
 	model resourceReference: self class myCommentReference.
 	self 
@@ -76,7 +78,7 @@ MicDocumentBrowserModelTest >> testResourceReference [
 		deny: model isDirty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testSave [
 	[
 		model resourceReference: self class myCommentReference.
@@ -91,7 +93,7 @@ MicDocumentBrowserModelTest >> testSave [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testSave_not [
 	"Pick a resource which is read-only"
 	model resourceReference: 'pharo:///MicDocumentBrowserModelTest/backupComment' asMicResourceReference.
@@ -100,7 +102,7 @@ MicDocumentBrowserModelTest >> testSave_not [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserModelTest >> testSource [
 	model resourceReference: self class myCommentReference.
 	self 

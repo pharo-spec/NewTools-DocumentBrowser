@@ -9,7 +9,9 @@ And I extend the MicFileResourceReference with icons for use in the documnt brow
 The classes in tag 'Model' are unused at the moment, but implement hierarchical structure over microdown documents and are just kept for reference for the time being (the issue is that some documents might be large, and it would be nice to browse a large document by sections in the tree view, but then what to do when trying to edit this large document).
 "
 Class {
-	#name : #ManifestNewToolsDocumentBrowser,
-	#superclass : #PackageManifest,
-	#category : #'NewTools-DocumentBrowser-Manifest'
+	#name : 'ManifestNewToolsDocumentBrowser',
+	#superclass : 'PackageManifest',
+	#category : 'NewTools-DocumentBrowser-Manifest',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'Manifest'
 }

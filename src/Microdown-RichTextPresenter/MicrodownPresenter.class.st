@@ -6,41 +6,43 @@ The document rendered into a Text in the document: method.
 It is possible to control various aspects of the Text generation using a `MicTextStyler` instance.
 "
 Class {
-	#name : #MicrodownPresenter,
-	#superclass : #MicTextPresenter,
+	#name : 'MicrodownPresenter',
+	#superclass : 'MicTextPresenter',
 	#instVars : [
 		'#document => ObservableSlot',
 		'#textStyler => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextPresenter-Widgets'
+	#category : 'Microdown-RichTextPresenter-Widgets',
+	#package : 'Microdown-RichTextPresenter',
+	#tag : 'Widgets'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MicrodownPresenter class >> adapterName [
 
 	^ #MicMorphicMicrodownAdapter
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicrodownPresenter class >> open [
 
 	<script>
 	(self new document: MicTextPresenter cheetSheet) open
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicrodownPresenter >> document [
 
 	^ document
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicrodownPresenter >> document: aNode [
 
 	document := aNode
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicrodownPresenter >> documentFromString: aString [
 
 	self document: (self parserClass parse: aString)
@@ -48,30 +50,30 @@ MicrodownPresenter >> documentFromString: aString [
 		
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicrodownPresenter >> parserClass [
 	^ Microdown
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicrodownPresenter >> textStyler [
 
 	^ textStyler ifNil: [ textStyler := MicTextStyler new ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicrodownPresenter >> textStyler: styler [
 
 	textStyler := styler
 ]
 
-{ #category : #'api - events' }
+{ #category : 'api - events' }
 MicrodownPresenter >> whenDocumentChangedDo: aBlock [
 
 	self property: #document whenChangedDo: aBlock
 ]
 
-{ #category : #'api - events' }
+{ #category : 'api - events' }
 MicrodownPresenter >> whenTextStylerChangedDo: aBlock [
 
 	self property: #textStyler whenChangedDo: aBlock

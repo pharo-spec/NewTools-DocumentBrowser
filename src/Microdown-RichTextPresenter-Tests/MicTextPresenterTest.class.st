@@ -2,35 +2,36 @@
 A SpRichTextPresenterTest is a test class for testing the behavior of SpRichTextPresenter
 "
 Class {
-	#name : #MicTextPresenterTest,
-	#superclass : #SpSmokeTest,
-	#category : #'Microdown-RichTextPresenter-Tests'
+	#name : 'MicTextPresenterTest',
+	#superclass : 'SpSmokeTest',
+	#category : 'Microdown-RichTextPresenter-Tests',
+	#package : 'Microdown-RichTextPresenter-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextPresenterTest >> adapter [
 	"We do not use this for anything. 
 	When the framework start using this, give us an error so we can fix it"
 	self error: 'Somewhere the frameworks started using this method - can we use it?'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextPresenterTest >> classToTest [
 	^ MicTextPresenter 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicTextPresenterTest >> setUp [
 	super setUp.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testAdapterExists [
 	self openInstance.
 	self assert: presenter adapter notNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testHugeFontIsHuge [
 	| hugeText pointSize |
 	pointSize := 104.
@@ -43,7 +44,7 @@ MicTextPresenterTest >> testHugeFontIsHuge [
 	self assert: presenter adapter widget textArea height > pointSize 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testSelectAll [
 	| txt |
 	txt := 'some text to select' asText.
@@ -53,7 +54,7 @@ MicTextPresenterTest >> testSelectAll [
 	self assert: presenter selectedText equals: txt
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testSelectNone [
 	| txt |
 	txt := 'some text to select' asText.
@@ -63,7 +64,7 @@ MicTextPresenterTest >> testSelectNone [
 	self assert: presenter selectedText equals: '' asText
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testSelectSome [
 	| txt |
 	txt := 'some text to select' asText.
@@ -73,7 +74,7 @@ MicTextPresenterTest >> testSelectSome [
 	self assert: presenter selectedText equals: 'text' asText
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testSelectSomeOther [
 	| txt |
 	txt := 'some text to select' asText.
@@ -83,7 +84,7 @@ MicTextPresenterTest >> testSelectSomeOther [
 	self assert: presenter selectedText equals: 'text' asText
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testSelectingInEditor [
 	| txt |
 	txt := 'some text to select' asText.
@@ -93,13 +94,13 @@ MicTextPresenterTest >> testSelectingInEditor [
 	self assert: presenter selectedText equals: 'select' asText
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testWidgetExists [
 	self openInstance.
 	self assert: presenter adapter widget notNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testwhenSelectionChangedDo [
 	| txt wasHere |
 	wasHere := false.
@@ -111,7 +112,7 @@ MicTextPresenterTest >> testwhenSelectionChangedDo [
 	self assert: wasHere
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testwhenSelectionChangedDoFromEditor [
 	| txt wasHere |
 	wasHere := false.
@@ -123,7 +124,7 @@ MicTextPresenterTest >> testwhenSelectionChangedDoFromEditor [
 	self assert: wasHere
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextPresenterTest >> testwhenTextChangedDo [
 	| wasHere |
 	wasHere := false.

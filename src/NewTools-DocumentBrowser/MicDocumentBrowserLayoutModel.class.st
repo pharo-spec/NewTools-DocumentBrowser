@@ -7,25 +7,27 @@ I maintain the state of the variable part of the document browser layout. In par
 the document browser ask for a layout using the method: `MicDocumentBrowserLayoutModel>>layoutList:rendering:source`, which I compose based on my state
 "
 Class {
-	#name : #MicDocumentBrowserLayoutModel,
-	#superclass : #Model,
+	#name : 'MicDocumentBrowserLayoutModel',
+	#superclass : 'Model',
 	#instVars : [
 		'showDocumentList',
 		'showSource',
 		'sourceMode',
 		'sourceLayouts'
 	],
-	#category : #'NewTools-DocumentBrowser-GUI'
+	#category : 'NewTools-DocumentBrowser-GUI',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'GUI'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserLayoutModel >> initialize [
 	showDocumentList := true.
 	showSource := false.
 	sourceMode := self sourceBottom
 ]
 
-{ #category : #layouting }
+{ #category : 'layouting' }
 MicDocumentBrowserLayoutModel >> layoutList: spDocumentList rendering: spRendering source: spSource [
 	"I return a layout based on my state for the three components"
 	^ showDocumentList
@@ -39,7 +41,7 @@ MicDocumentBrowserLayoutModel >> layoutList: spDocumentList rendering: spRenderi
 			self layoutRendering: spRendering source: spSource  ]
 ]
 
-{ #category : #layouting }
+{ #category : 'layouting' }
 MicDocumentBrowserLayoutModel >> layoutRendering: spRendering source: spSource [
 	
 	self showSource ifFalse: [ ^ spRendering ].
@@ -49,37 +51,37 @@ MicDocumentBrowserLayoutModel >> layoutRendering: spRendering source: spSource [
 		value: spSource 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> showDocumentList [
 
 	^ showDocumentList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> showDocumentList: anObject [
 
 	showDocumentList := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> showSource [
 
 	^ showSource
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> showSource: anObject [
 
 	showSource := anObject
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceBottom [
 
 	^ 'Source bottom'
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceLayouts [
 	"return a dictionary of layout blocks."
 	sourceLayouts ifNotNil: [ ^ sourceLayouts ].
@@ -93,42 +95,42 @@ MicDocumentBrowserLayoutModel >> sourceLayouts [
 	
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceLeft [
 
 	^ 'Source left'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> sourceMode [
 
 	^ sourceMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserLayoutModel >> sourceMode: anObject [
 
 	sourceMode := anObject
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceModes [
 
 	^ self sourceLayouts keys
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceRight [
 
 	^ 'Source right'
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceSwap [
 	^ #Swap 
 ]
 
-{ #category : #'source modes' }
+{ #category : 'source modes' }
 MicDocumentBrowserLayoutModel >> sourceTop [
 	^ 'Source top'
 ]

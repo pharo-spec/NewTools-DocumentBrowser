@@ -30,17 +30,19 @@ In case the URI point a tag, the children are the classes in the tag.
 
 "
 Class {
-	#name : #MicPharoPackageCommentResourceReference,
-	#superclass : #MicPharoCommentResourceReference,
+	#name : 'MicPharoPackageCommentResourceReference',
+	#superclass : 'MicPharoCommentResourceReference',
 	#instVars : [
 		'kind',
 		'packageName',
 		'tagName'
 	],
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#category : 'NewTools-DocumentBrowser-ResourceModel',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'ResourceModel'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicPharoPackageCommentResourceReference >> browserIcon [
 	self kind = #prefix ifTrue: [ ^ self iconNamed: #group ].
 	self kind = #package ifTrue: [ ^ self iconNamed: #package ].
@@ -48,21 +50,21 @@ MicPharoPackageCommentResourceReference >> browserIcon [
 	^ self iconNamed: #error
 ]
 
-{ #category : #'document browser' }
+{ #category : 'document browser' }
 MicPharoPackageCommentResourceReference >> browserTitle [
 
 	kind = 'prefix' ifTrue: [ ^ self packageName , '*' ].
 	^ self packageName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicPharoPackageCommentResourceReference >> canSave [
 	"return true if I implement contents: "
 
 	^ self isPackage
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicPharoPackageCommentResourceReference >> childrenOfAllPackages [
 	"I return the children of 'comment://package/' "
 
@@ -72,7 +74,7 @@ MicPharoPackageCommentResourceReference >> childrenOfAllPackages [
 		  ('comment://package/' , package) asMicResourceReference ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicPharoPackageCommentResourceReference >> childrenOfPackage [
 	"I assume I am a package, return my tags"
 
@@ -81,7 +83,7 @@ MicPharoPackageCommentResourceReference >> childrenOfPackage [
 	^ (tags asArray sorted: #name ascending) collect: [ :tag | ('comment://package/' , self packageName , '?tag=' , tag name) asMicResourceReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> childrenOfPackagePrefix [
 	"I am a prefix of a set of packages, 
 	my children are those packages with one more depth in their name"
@@ -92,7 +94,7 @@ MicPharoPackageCommentResourceReference >> childrenOfPackagePrefix [
 		  thenCollect: [ :package | ('comment://package/' , package) asMicResourceReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> childrenOfPackageWithTag [
 	"In case I matche a package tag, children are the classes under that tag"
 
@@ -101,7 +103,7 @@ MicPharoPackageCommentResourceReference >> childrenOfPackageWithTag [
 			collect: [ :class | ('comment://class/' , class name) asMicResourceReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> contents [
 
 	[ ^ self package packageComment ]
@@ -109,7 +111,7 @@ MicPharoPackageCommentResourceReference >> contents [
 		do: [ ^ '' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> contents: aNewComment [
 
 	[ ^ self package packageComment: aNewComment ]
@@ -117,27 +119,27 @@ MicPharoPackageCommentResourceReference >> contents: aNewComment [
 		do: [ MicResourceReferenceError signal: 'No package named ' , self packageName ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicPharoPackageCommentResourceReference >> isPackage [
 
 	self packageName asPackageIfAbsent: [ ^ false ].
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicPharoPackageCommentResourceReference >> isTag [
 	"return true if I am tag inside a package"
 
 	^ self kind = #tag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> kind [
 
 	^ kind
 ]
 
-{ #category : #'private - utilities' }
+{ #category : 'private - utilities' }
 MicPharoPackageCommentResourceReference >> level [
 	"return the number of '-' in package name"
 
@@ -145,7 +147,7 @@ MicPharoPackageCommentResourceReference >> level [
 	^ self packageName occurrencesOf: $-
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> loadChildren [
 	kind = #prefix ifTrue: [ ^ self childrenOfPackagePrefix  ].
 	kind = #package ifTrue: [ ^ self childrenOfPackage  ].
@@ -153,7 +155,7 @@ MicPharoPackageCommentResourceReference >> loadChildren [
 	MicResourceReferenceError signal: 'Unknow kind in ', self uri printString.
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicPharoPackageCommentResourceReference >> loadMicrodown [
 	"I override to provide the comment produced by beautifulComments"
 
@@ -164,19 +166,25 @@ MicPharoPackageCommentResourceReference >> loadMicrodown [
 	^ Microdown parse: builder contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> package [
 
 	^ self packageName asPackage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> packageName [
 
 	^ packageName
 ]
 
-{ #category : #'private - utilities' }
+{ #category : 'private - utilities' }
+MicPharoPackageCommentResourceReference >> reducePackageName: aPackageName [
+
+	^ self reducePackageName: aPackageName toLevel: self level + 1
+]
+
+{ #category : 'private - utilities' }
 MicPharoPackageCommentResourceReference >> reducePackageName: aString toLevel: level [
 	"a package name aaa-bbb-ccc-ddd reduced to level 0 is aaa, reduced to 2 is aaa-bbb-ccc"
 
@@ -185,18 +193,12 @@ MicPharoPackageCommentResourceReference >> reducePackageName: aString toLevel: l
 	^ (parts first: level + 1) joinUsing: $-
 ]
 
-{ #category : #'private - utilities' }
-MicPharoPackageCommentResourceReference >> reducePackageName: aPackageName [
-
-	^ self reducePackageName: aPackageName toLevel: self level + 1
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> tagName [
 	^ tagName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoPackageCommentResourceReference >> uri: aUri [
 	"the uri is on the form commet://package/packageName - 
 	packageName can be a prefix of a full package name"

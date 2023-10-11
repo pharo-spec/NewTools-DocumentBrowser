@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfNewToolsDocumentBrowser,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfNewToolsDocumentBrowser
+	#name : 'BaselineOfNewToolsDocumentBrowser',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfNewToolsDocumentBrowser',
+	#package : 'BaselineOfNewToolsDocumentBrowser'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfNewToolsDocumentBrowser >> baseline: spec [
 	<baseline>
 

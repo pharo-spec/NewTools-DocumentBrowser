@@ -8,15 +8,17 @@ My model (inherited instance variable) is a `SpRichTextPresenter`.
 Perhaps in the future the methods for menu and shiftMenu should be forwarded to the presenter.
 "
 Class {
-	#name : #MicMorphicTextAdapter,
-	#superclass : #SpAbstractMorphicAdapter,
+	#name : 'MicMorphicTextAdapter',
+	#superclass : 'SpAbstractMorphicAdapter',
 	#instVars : [
 		'scalingImageIndexes'
 	],
-	#category : #'Microdown-RichTextPresenter-Adapters'
+	#category : 'Microdown-RichTextPresenter-Adapters',
+	#package : 'Microdown-RichTextPresenter',
+	#tag : 'Adapters'
 }
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicMorphicTextAdapter >> buildWidget [
 	| newWidget |
 
@@ -47,25 +49,25 @@ MicMorphicTextAdapter >> buildWidget [
 	^ newWidget
 ]
 
-{ #category : #'morph->presenter' }
+{ #category : 'morph->presenter' }
 MicMorphicTextAdapter >> getText [
 	"called by morph to get text from model"
 	^ model text
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicMorphicTextAdapter >> initialize [
 
 	super initialize.
 	scalingImageIndexes := Array new
 ]
 
-{ #category : #'morph->presenter' }
+{ #category : 'morph->presenter' }
 MicMorphicTextAdapter >> menu [
 	^ nil.
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MicMorphicTextAdapter >> renderWidth: renderWidth [
 
 	"I am called by the morph directly to recompute image sizes"
@@ -75,32 +77,32 @@ MicMorphicTextAdapter >> renderWidth: renderWidth [
 			targetWidth: renderWidth ]
 ]
 
-{ #category : #'presenter->morph' }
+{ #category : 'presenter->morph' }
 MicMorphicTextAdapter >> scalingImageIndexes [
 
 	^ scalingImageIndexes
 ]
 
-{ #category : #'presenter->morph' }
+{ #category : 'presenter->morph' }
 MicMorphicTextAdapter >> selectionInterval [
 	"called by the presenter to get the selection in the morph"
 	^ self widget selectionInterval
 ]
 
-{ #category : #'presenter->morph' }
+{ #category : 'presenter->morph' }
 MicMorphicTextAdapter >> selectionInterval: anInterval [
 	"called by presenter to set selection in morph"
 
 	self widgetDo: [ :w | w setTextAreaSelection: anInterval ]
 ]
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicMorphicTextAdapter >> setEnabled: aBoolean to: aWidget [
 
 	aWidget enabled: aBoolean
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicMorphicTextAdapter >> setScrollValue: aValue [
 
 	self widgetDo: [ :w | 
@@ -110,19 +112,19 @@ MicMorphicTextAdapter >> setScrollValue: aValue [
 			updateScrollbars ]
 ]
 
-{ #category : #'morph->presenter' }
+{ #category : 'morph->presenter' }
 MicMorphicTextAdapter >> setSelection: interval [
 	"Called when a selection happens in the widget"
 	self model selectionInterval: interval
 ]
 
-{ #category : #'presenter->morph' }
+{ #category : 'presenter->morph' }
 MicMorphicTextAdapter >> setText: aText [
 	"called by presenter to set text in morph"
 	self widgetDo: [ :w |self setText: aText to: w ]
 ]
 
-{ #category : #'presenter->morph' }
+{ #category : 'presenter->morph' }
 MicMorphicTextAdapter >> setText: aText to: aWidget [
 	"called by presenter to set text in morph"
 
@@ -136,7 +138,7 @@ MicMorphicTextAdapter >> setText: aText to: aWidget [
 		resetState
 ]
 
-{ #category : #'morph->presenter' }
+{ #category : 'morph->presenter' }
 MicMorphicTextAdapter >> shiftMenu [
 	^ nil.
 ]

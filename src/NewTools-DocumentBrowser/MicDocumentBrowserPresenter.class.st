@@ -21,8 +21,8 @@ Moving to an other document or closing the browser will save changes made in sou
 In order to prevent cycles in the events, all methods called through gui actions are garding some parts of their actions with a check on the variable `disabledEvents'. 
 "
 Class {
-	#name : #MicDocumentBrowserPresenter,
-	#superclass : #StPresenter,
+	#name : 'MicDocumentBrowserPresenter',
+	#superclass : 'StPresenter',
 	#instVars : [
 		'spButtonBar',
 		'spDocumentList',
@@ -37,24 +37,26 @@ Class {
 	#classVars : [
 		'Browser'
 	],
-	#category : #'NewTools-DocumentBrowser-GUI'
+	#category : 'NewTools-DocumentBrowser-GUI',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'GUI'
 }
 
-{ #category : #'services menu' }
+{ #category : 'services menu' }
 MicDocumentBrowserPresenter class >> fileReaderServicesForFile: fullName suffix: suffix [
 	<fileService>
 	suffix = 'md' ifFalse:[^ #() ].
 	^ { self serviceOpenMicrodownDocument  }
 ]
 
-{ #category : #'services menu' }
+{ #category : 'services menu' }
 MicDocumentBrowserPresenter class >> itemsForDirectory: aFileDirectory [
 	<directoryService>
 	
 	^ { self serviceOpenMicrodownDirectory }
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicDocumentBrowserPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Documentation Browser')
@@ -66,7 +68,7 @@ MicDocumentBrowserPresenter class >> menuCommandOn: aBuilder [
 		withSeparatorAfter
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicDocumentBrowserPresenter class >> open [
 	"I ensure the browser to be open. If no browser exist, I instantiate one"
 	<script>
@@ -77,7 +79,7 @@ MicDocumentBrowserPresenter class >> open [
 	
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicDocumentBrowserPresenter class >> openDocument: aMicResourceReferenceOrString [
 	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
 	I am called when following links in rich text to microdown documents, but can also be used as api method."
@@ -89,7 +91,7 @@ MicDocumentBrowserPresenter class >> openDocument: aMicResourceReferenceOrString
 		ifFalse: [aMicResourceReferenceOrString ])
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicDocumentBrowserPresenter class >> reset [
 	<script>
 	Browser ifNil: [ ^ self ].
@@ -98,7 +100,7 @@ MicDocumentBrowserPresenter class >> reset [
 	Browser := nil.
 ]
 
-{ #category : #'services menu' }
+{ #category : 'services menu' }
 MicDocumentBrowserPresenter class >> serviceOpenMicrodownDirectory [
 	"Answer the service of opening a file-contents browser"
 
@@ -111,7 +113,7 @@ MicDocumentBrowserPresenter class >> serviceOpenMicrodownDirectory [
 		argumentGetter: [ :file| file fullName]
 ]
 
-{ #category : #'services menu' }
+{ #category : 'services menu' }
 MicDocumentBrowserPresenter class >> serviceOpenMicrodownDocument [
 	"Answer the service of opening a file-contents browser"
 
@@ -124,7 +126,7 @@ MicDocumentBrowserPresenter class >> serviceOpenMicrodownDocument [
 		argumentGetter: [ :file| file fullName]
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 MicDocumentBrowserPresenter >> addRoot: document [
 	"Add document to the documents list and select it. If already in the list, just select it"
 	| toSelect |
@@ -141,7 +143,7 @@ MicDocumentBrowserPresenter >> addRoot: document [
 	
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> cancelSourceChange [
 	"called by whenResetDo: on spSource "
 	disableEvents ifTrue: [ ^ self ].
@@ -154,7 +156,7 @@ MicDocumentBrowserPresenter >> cancelSourceChange [
 			text: documentModel source]
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 MicDocumentBrowserPresenter >> childrenOf: aNode [
 	"I am a utility method to find children in a node"
 	(aNode isKindOf: MicElement)
@@ -168,7 +170,7 @@ MicDocumentBrowserPresenter >> childrenOf: aNode [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserPresenter >> connectPresenters [
 	"Listen to gui input"
 	spDocumentList 
@@ -179,7 +181,7 @@ MicDocumentBrowserPresenter >> connectPresenters [
 		whenTextChangedDo: [ :newSource | self setSource: newSource ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentBrowserPresenter >> defaultDocumentRoots [
 	"By default include the pharo doc and the docs of loaded projects"
 	^ ({'github://pharo-project/pharo/doc'}, 
@@ -187,13 +189,13 @@ MicDocumentBrowserPresenter >> defaultDocumentRoots [
 			collect: #asMicResourceReference
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicDocumentBrowserPresenter >> defaultLayout [
 
 	^ self topLayout
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> disableEventsDuring: aBlock [
 	| old | 
 	"The clue of old is to allow multible nested diableEventsDuring calls
@@ -203,27 +205,27 @@ MicDocumentBrowserPresenter >> disableEventsDuring: aBlock [
 	aBlock ensure: [ disableEvents := old ]
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 MicDocumentBrowserPresenter >> displayIconOf: aNode [
 	"Utility method to put icons on the document list"
 	(aNode isKindOf: MicElement) ifTrue: [ ^ self iconNamed: #smallLeftFlush ].
 	^ aNode browserIcon
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 MicDocumentBrowserPresenter >> displayStringOf: aNode [
 	"Utility method to generate the titles used in document list"
 	(aNode isKindOf: MicSectionBlock) ifTrue: [ ^ (Microdown asRichText: aNode header) asString trim ].
 	^aNode browserTitle
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentBrowserPresenter >> documentRoots [
 	^ documentRoots 
 		ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 MicDocumentBrowserPresenter >> documentSelected: document [
 	"document is newly selected, and should be rendered. If source is showing, set it as well"
 	documentModel save.
@@ -236,7 +238,7 @@ MicDocumentBrowserPresenter >> documentSelected: document [
 		(self displayStringOf: documentModel resourceReference)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserPresenter >> initialize [
 	"Initialize my models first"
 	documentModel := MicDocumentBrowserModel new.
@@ -245,7 +247,7 @@ MicDocumentBrowserPresenter >> initialize [
 	super initialize
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserPresenter >> initializeButtons [
 	"initialize the button bar"
 	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
@@ -268,7 +270,7 @@ MicDocumentBrowserPresenter >> initializeButtons [
 			whenChangedDo: [ :val | self setSourceShowing: val ])
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -284,7 +286,7 @@ MicDocumentBrowserPresenter >> initializePresenters [
 	self initializeButtons
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserPresenter >> initializeWindow: aWindowPresenter [
 	"Adds window closing behaviour"
 	super initializeWindow: aWindowPresenter.
@@ -298,7 +300,7 @@ MicDocumentBrowserPresenter >> initializeWindow: aWindowPresenter [
 			Browser := nil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentBrowserPresenter >> loadedDocsInWorkspace [
 	"I return all the doc folders which exist in the local iceberg repository"
 	| iceRepository githubUsers |
@@ -310,14 +312,14 @@ MicDocumentBrowserPresenter >> loadedDocsInWorkspace [
 		select: [ :dir | #('doc' 'docs' 'documentation') includes: dir basename asLowercase ]
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> newSelection: selection [
 	"I am called when a user selects a new element in spDocumentList"
 	disableEvents ifTrue: [ ^ self ].
 	self documentSelected: selection
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> saveSource [
 	"called by save button or accept in spSource"
 	| path sourceSelection sourceScroll |
@@ -343,14 +345,14 @@ MicDocumentBrowserPresenter >> saveSource [
 		spSource takeKeyboardFocus ]
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> setListShowing: aBoolean [
 	"Change layout to include the document list or not"
 	layoutModel showDocumentList: aBoolean.
 	self disableEventsDuring: [ self setTopLayout ] 
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> setSource: newSource [
 	"called by changes to spSource"
 	disableEvents ifTrue: [ ^ self ].
@@ -359,14 +361,14 @@ MicDocumentBrowserPresenter >> setSource: newSource [
 	
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> setSourceMode: sourceMode [
 	"Change the layout as how spRendering and spSource are placed"
 	layoutModel sourceMode: sourceMode.
 	self disableEventsDuring: [ self setTopLayout  ]
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 MicDocumentBrowserPresenter >> setSourceShowing: showSource [
 	"change layout to include spSource or not"
 	layoutModel showSource: showSource.
@@ -375,23 +377,23 @@ MicDocumentBrowserPresenter >> setSourceShowing: showSource [
 		self updateSourcePresenter]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicDocumentBrowserPresenter >> setTopLayout [
 	"I set the layout of the browser. The dynamic part of the layout is done by layoutModel"
 	self layout: self topLayout
 ]
 
-{ #category : #'dirty indication' }
+{ #category : 'dirty indication' }
 MicDocumentBrowserPresenter >> showSourceDirty [
 	spSource removeStyle: 'notDirty'; addStyle: 'dirty'
 ]
 
-{ #category : #'dirty indication' }
+{ #category : 'dirty indication' }
 MicDocumentBrowserPresenter >> showSourceNotDirty [
 	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicDocumentBrowserPresenter >> topLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -403,7 +405,7 @@ MicDocumentBrowserPresenter >> topLayout [
 		yourself
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MicDocumentBrowserPresenter >> updateSourcePresenter [
 	""
 	layoutModel showSource ifTrue: [

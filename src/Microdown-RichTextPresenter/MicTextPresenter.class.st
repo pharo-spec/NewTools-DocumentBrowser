@@ -14,23 +14,25 @@ I work together with `SpMorphicRichTextAdapter` and `SpRichTextMorph`. The morph
 I support `MicScalingTextAnchor`. When the size of the morph changes, the morph calls my render method. I then rescale the scaleable images (if any). As I am read-only, the location of the scalable images do not change, and I keep a list of the indexes where they are in `imageIndexes`. imageIndexes are computed in `text:`.
 "
 Class {
-	#name : #MicTextPresenter,
-	#superclass : #SpAbstractWidgetPresenter,
+	#name : 'MicTextPresenter',
+	#superclass : 'SpAbstractWidgetPresenter',
 	#instVars : [
 		'#text => ObservableSlot',
 		'#selection => ObservableSlot',
 		'#wrapWord => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextPresenter-Widgets'
+	#category : 'Microdown-RichTextPresenter-Widgets',
+	#package : 'Microdown-RichTextPresenter',
+	#tag : 'Widgets'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MicTextPresenter class >> adapterName [
 
 	^ #MicMorphicTextAdapter
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicTextPresenter class >> cheetSheet [
 ^ Microdown parse: '# Markdown Cheatsheet
 
@@ -180,7 +182,7 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 '
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicTextPresenter class >> exampleCheetSheet [
 
 	<example>
@@ -189,7 +191,7 @@ MicTextPresenter class >> exampleCheetSheet [
 		  open
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicTextPresenter class >> exampleSample [
 
 	<example>
@@ -198,7 +200,7 @@ MicTextPresenter class >> exampleSample [
 		  open
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicTextPresenter class >> sampleDocument [
 	"I return a sample document"
 	^ Microdown parse: '# Header 1
@@ -215,39 +217,39 @@ Here are direct links to classes and method
 And this is another line'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTextPresenter >> initialize [
 
 	super initialize.
 	text := '' asText
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicTextPresenter >> isWrapWord [
 	"Answer true if words will be wrapped to make text fit horizontally into component area."
 
 	^ wrapWord
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicTextPresenter >> rawSelection: anInterval [
 
 	self property: #selection rawValue: anInterval
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MicTextPresenter >> selectAll [
 
 	self selectionInterval: (1 to: text size)
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MicTextPresenter >> selectNone [
 
 	self selectionInterval: (1 to: 0)
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MicTextPresenter >> selectedText [ 
 	"Answer the text contained in selection interval 
 	(See `SpAbstractTextPresenter>>#selectionInterval`)"
@@ -261,7 +263,7 @@ MicTextPresenter >> selectedText [
 		to: selectionInterval last
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MicTextPresenter >> selectionInterval [
 	"Answer the text selection interval (an interval from start to end)."
 
@@ -270,7 +272,7 @@ MicTextPresenter >> selectionInterval [
 	^ selection ifNil: [ 1 to: 0 ]
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MicTextPresenter >> selectionInterval: anInterval [
 	"Set the text selection interval.
 	 `anInterval` is an `Interval` from the first character selected to the end."
@@ -278,19 +280,19 @@ MicTextPresenter >> selectionInterval: anInterval [
 	selection := anInterval
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicTextPresenter >> text [
 
 	^ text
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MicTextPresenter >> text: aText [
 
 	text := aText asText "just in case I was given a string"
 ]
 
-{ #category : #'api - events' }
+{ #category : 'api - events' }
 MicTextPresenter >> whenSelectionChangedDo: aBlock [
 	"Inform when selection changed. 
 	 `aBlock` receives two optional arguments 
@@ -300,7 +302,7 @@ MicTextPresenter >> whenSelectionChangedDo: aBlock [
 	self property: #selection whenChangedDo: aBlock
 ]
 
-{ #category : #'api - events' }
+{ #category : 'api - events' }
 MicTextPresenter >> whenTextChangedDo: aBlock [
 	"Inform when text has been changed (`text:` has been called)
 	 `aBlock` receives two optional arguments 

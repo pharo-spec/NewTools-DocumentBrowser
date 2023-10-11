@@ -1,6 +1,6 @@
-Extension { #name : #MicElement }
+Extension { #name : 'MicElement' }
 
-{ #category : #'*Microdown-RichTextPresenter' }
+{ #category : '*Microdown-RichTextPresenter' }
 MicElement >> inspectionSectionRendered [
 
 	<inspectorPresentationOrder: 950 title: 'Rendered'>

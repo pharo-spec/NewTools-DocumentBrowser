@@ -11,17 +11,19 @@ If the document has a single level 1 header as the first element in the rootbloc
 
 "
 Class {
-	#name : #MicSectionBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicSectionBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'header',
 		'subsections',
 		'body'
 	],
-	#category : #'NewTools-DocumentBrowser-BlockModel'
+	#category : 'NewTools-DocumentBrowser-BlockModel',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'BlockModel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSectionBlock class >> fromRoot: document [
 	| newSection |
 	newSection := self new
@@ -33,48 +35,48 @@ MicSectionBlock class >> fromRoot: document [
 		ifFalse: [ newSection ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSectionBlock >> accept: aVisitor [
 	self children do: [ :node | node accept: aVisitor  ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicSectionBlock >> addLineAndReturnNextNode: line [
 	"I am not supposed to be generated during parsing, and this method should not be called on me"
 	self shouldNotImplement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> body [
 	^ body
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> body: anObject [
 
 	body := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicSectionBlock >> canConsumeLine: line [
 	"I am not supposed to be generated during parsing, and this method should not be called on me"
 	self shouldNotImplement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> children [
 	^ self header 
 		ifNil: [ { self body. self subsections  } ]
 		ifNotNil: [ { self header. self body. self subsections  } ]
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 MicSectionBlock >> displayString [
 	header ifNil: [ ^'Root section' ].
 	^ (Microdown asRichText: self header) asString trim
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSectionBlock >> from: nodeStream [
 	"collect preamble"
 	[ nodeStream atEnd not and:[ nodeStream peek isHeader not ]]
@@ -95,18 +97,18 @@ MicSectionBlock >> from: nodeStream [
 		 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> header [
 	^ header
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> header: headerBlock [
 	header := headerBlock.
 	header parent: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicSectionBlock >> initialize [
 
 	super initialize.
@@ -118,7 +120,7 @@ MicSectionBlock >> initialize [
 		               yourself
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 MicSectionBlock >> inspectionSection [
 
 	<inspectorPresentationOrder: 830 title: 'Sections'>
@@ -129,24 +131,24 @@ MicSectionBlock >> inspectionSection [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> level [
 	header ifNil: [ ^0 ].
 	^ header level
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> subsections [
 	^ subsections
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSectionBlock >> subsections: anObject [
 
 	subsections := anObject
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 MicSectionBlock >> title [
 	^ self displayString 
 ]

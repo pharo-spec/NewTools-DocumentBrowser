@@ -2,22 +2,23 @@
 A MicGitHubAPITest is a test class for testing the behavior of MicGitHubAPI
 "
 Class {
-	#name : #MicGitHubAPITest,
-	#superclass : #TestCase,
+	#name : 'MicGitHubAPITest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'api'
 	],
-	#category : #'NewTools-DocumentBrowser-GitHubResource-Tests'
+	#category : 'NewTools-DocumentBrowser-GitHubResource-Tests',
+	#package : 'NewTools-DocumentBrowser-GitHubResource-Tests'
 }
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 MicGitHubAPITest >> ensureApi: anInteger for: aFullBlockClosure [ 
 	api class apiCallsRemaining >= anInteger 
 		ifTrue: [ aFullBlockClosure value ]
 		ifFalse: [ self skip: 'Rate limit exhaused' ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicGitHubAPITest >> setUp [
 	super setUp.
 	
@@ -29,7 +30,7 @@ MicGitHubAPITest >> setUp [
 			do: [ 'Just reading the default branch will set the number of API calls remaining' ]]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubAPITest >> testGet [
 	| url res |
 	self ensureApi: 1 for: [
@@ -39,7 +40,7 @@ MicGitHubAPITest >> testGet [
 		self assert: (res at: 'default_branch') equals: 'dev']
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubAPITest >> testIsCaching [
 	| url res rate|
 	self ensureApi: 1 for: [
@@ -52,7 +53,7 @@ MicGitHubAPITest >> testIsCaching [
 		].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubAPITest >> testdefaultBranchProject [
 	| branch |
 	self ensureApi: 1 for: [
@@ -60,7 +61,7 @@ MicGitHubAPITest >> testdefaultBranchProject [
 		self assert: branch equals: 'dev']
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubAPITest >> testdefaultBranchProject_Pharo [
 	| branch |
 	self ensureApi: 1 for: [
@@ -68,7 +69,7 @@ MicGitHubAPITest >> testdefaultBranchProject_Pharo [
 		self assert: (branch beginsWith: 'Pharo')]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicGitHubAPITest >> testdefaultBranchProject_defaultBranch [
 	
 	| branch |

@@ -9,42 +9,44 @@ My `loadMicrodown` returns the class comment of the class named className. Notic
 When categoryName is a package, my two methods `contents` and `contents:` reads and writes the contents of the package comment.
 "
 Class {
-	#name : #MicPharoClassCommentResourceReference,
-	#superclass : #MicPharoCommentResourceReference,
+	#name : 'MicPharoClassCommentResourceReference',
+	#superclass : 'MicPharoCommentResourceReference',
 	#instVars : [
 		'classReference'
 	],
-	#category : #'NewTools-DocumentBrowser-ResourceModel'
+	#category : 'NewTools-DocumentBrowser-ResourceModel',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'ResourceModel'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicPharoClassCommentResourceReference >> browserIcon [
 	^ self iconNamed: #class
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoClassCommentResourceReference >> canSave [
 	"return true if I implement contents: "
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoClassCommentResourceReference >> classReference [
 
 	^ classReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoClassCommentResourceReference >> contents [
 	^ classReference comment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoClassCommentResourceReference >> contents: newCommentString [
 	^ classReference comment: newCommentString
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicPharoClassCommentResourceReference >> loadMicrodown [
 	"I override to provide the comment produced by beautifulComments"
 	| builder |
@@ -55,7 +57,7 @@ MicPharoClassCommentResourceReference >> loadMicrodown [
 	^ Microdown parse: builder contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoClassCommentResourceReference >> uri: aUri [
 
 	"the uri is on the form commet://class/ClassName[/class]"

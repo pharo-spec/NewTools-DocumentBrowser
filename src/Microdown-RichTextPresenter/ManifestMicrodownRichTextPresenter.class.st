@@ -5,7 +5,9 @@ I do implement presentation of inlined morphs, and MicScalingTextAnchor for scal
 
 "
 Class {
-	#name : #ManifestMicrodownRichTextPresenter,
-	#superclass : #PackageManifest,
-	#category : #'Microdown-RichTextPresenter-Manifest'
+	#name : 'ManifestMicrodownRichTextPresenter',
+	#superclass : 'PackageManifest',
+	#category : 'Microdown-RichTextPresenter-Manifest',
+	#package : 'Microdown-RichTextPresenter',
+	#tag : 'Manifest'
 }

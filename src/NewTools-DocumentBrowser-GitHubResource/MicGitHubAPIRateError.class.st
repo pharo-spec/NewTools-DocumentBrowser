@@ -3,21 +3,22 @@ I am an error raised when there is not enough api calls left to complete the cal
 Github restricts the number of api calls to 60 per hour
 "
 Class {
-	#name : #MicGitHubAPIRateError,
-	#superclass : #Error,
+	#name : 'MicGitHubAPIRateError',
+	#superclass : 'Error',
 	#instVars : [
 		'response'
 	],
-	#category : #'NewTools-DocumentBrowser-GitHubResource'
+	#category : 'NewTools-DocumentBrowser-GitHubResource',
+	#package : 'NewTools-DocumentBrowser-GitHubResource'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubAPIRateError >> response [
 
 	^ response
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicGitHubAPIRateError >> response: anObject [
 
 	response := anObject

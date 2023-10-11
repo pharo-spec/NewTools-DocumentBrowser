@@ -1,10 +1,11 @@
 Class {
-	#name : #MicrodownSpecComponentTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextPresenter-Tests'
+	#name : 'MicrodownSpecComponentTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextPresenter-Tests',
+	#package : 'Microdown-RichTextPresenter-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownSpecComponentTest >> testComponent [
 
 	| comp |

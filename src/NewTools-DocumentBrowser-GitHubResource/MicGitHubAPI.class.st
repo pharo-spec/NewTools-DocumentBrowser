@@ -6,17 +6,18 @@ One can access the remaining number of api calls through class side `apiCallsRem
 I cache my responses, in a LRU cache of 120 last calls (randomly picked number worth two hours af api calls).
 "
 Class {
-	#name : #MicGitHubAPI,
-	#superclass : #IceGitHubAPI,
+	#name : 'MicGitHubAPI',
+	#superclass : 'IceGitHubAPI',
 	#classVars : [
 		'APICount',
 		'NextReset',
 		'ResponseCache'
 	],
-	#category : #'NewTools-DocumentBrowser-GitHubResource'
+	#category : 'NewTools-DocumentBrowser-GitHubResource',
+	#package : 'NewTools-DocumentBrowser-GitHubResource'
 }
 
-{ #category : #rates }
+{ #category : 'rates' }
 MicGitHubAPI class >> apiCallsRemaining [
 	| fullCount |
 	fullCount := 60.
@@ -25,19 +26,19 @@ MicGitHubAPI class >> apiCallsRemaining [
 	^ APICount 
 ]
 
-{ #category : #cache }
+{ #category : 'cache' }
 MicGitHubAPI class >> cache [
 	ResponseCache   ifNil: [ ResponseCache := LRUCache new maximumWeight: 117; yourself ].
 	^ ResponseCache
 ]
 
-{ #category : #cache }
+{ #category : 'cache' }
 MicGitHubAPI class >> cache: aCache [
 	"Only intended usage is for testing"
 	ResponseCache := aCache
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicGitHubAPI class >> reset [
 	<script>
 	ResponseCache := nil.
@@ -45,7 +46,7 @@ MicGitHubAPI class >> reset [
 	
 ]
 
-{ #category : #requesting }
+{ #category : 'requesting' }
 MicGitHubAPI >> defaultBranch: user project: project [
 	"Looks up the name of the default branch. returns nil if user/project does not exist"
 	| response |
@@ -55,7 +56,7 @@ MicGitHubAPI >> defaultBranch: user project: project [
 	do: [ ^ 'main' ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicGitHubAPI >> extractRateInfo: response [
 	| unixTime |
 	APICount := (response headers at: 'X-Ratelimit-Remaining') asNumber.
@@ -64,7 +65,7 @@ MicGitHubAPI >> extractRateInfo: response [
 	^ response
 ]
 
-{ #category : #'private - requesting' }
+{ #category : 'private - requesting' }
 MicGitHubAPI >> get: apiCallString [
 	"I return a json structure as the result from the github api call"
 	^ self class cache 
@@ -73,7 +74,7 @@ MicGitHubAPI >> get: apiCallString [
 	
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 MicGitHubAPI >> handleUnauthorized: response [
 	"I override this method as it was the least wrong place to access the response"
 	self extractRateInfo: response.

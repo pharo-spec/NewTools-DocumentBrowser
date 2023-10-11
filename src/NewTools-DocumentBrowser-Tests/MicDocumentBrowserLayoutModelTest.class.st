@@ -2,18 +2,20 @@
 A MicDocumentBrowserLayoutModelTest is a test class for testing the behavior of MicDocumentBrowserLayoutModel
 "
 Class {
-	#name : #MicDocumentBrowserLayoutModelTest,
-	#superclass : #TestCase,
+	#name : 'MicDocumentBrowserLayoutModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'testDocumentList',
 		'testRender',
 		'testSource'
 	],
-	#category : #'NewTools-DocumentBrowser-Tests-GUI'
+	#category : 'NewTools-DocumentBrowser-Tests-GUI',
+	#package : 'NewTools-DocumentBrowser-Tests',
+	#tag : 'GUI'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicDocumentBrowserLayoutModelTest >> setUp [
 	super setUp.
 	
@@ -23,7 +25,7 @@ MicDocumentBrowserLayoutModelTest >> setUp [
 	testSource := SpTextPresenter new text: 'source'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testInitilize [
 	self
 		assert: model showDocumentList;
@@ -31,7 +33,7 @@ MicDocumentBrowserLayoutModelTest >> testInitilize [
 		assert: model sourceMode equals: model sourceBottom 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testNoListAndNoSource [
 	| layout |
 	model showDocumentList: false.
@@ -42,7 +44,7 @@ MicDocumentBrowserLayoutModelTest >> testNoListAndNoSource [
 	self assert: layout equals: testRender .
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testNoListAndSource [
 	| layout |
 	model showDocumentList: false.
@@ -58,7 +60,7 @@ MicDocumentBrowserLayoutModelTest >> testNoListAndSource [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testSourceBottom [
 	| layout |
 	model showDocumentList: false.
@@ -75,7 +77,7 @@ MicDocumentBrowserLayoutModelTest >> testSourceBottom [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testSourceLeft [
 	| layout |
 	model showDocumentList: false.
@@ -92,7 +94,7 @@ MicDocumentBrowserLayoutModelTest >> testSourceLeft [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testSourceRight [
 	| layout |
 	model showDocumentList: false.
@@ -109,7 +111,7 @@ MicDocumentBrowserLayoutModelTest >> testSourceRight [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testSourceTop [
 	| layout |
 	model showDocumentList: false.
@@ -126,7 +128,7 @@ MicDocumentBrowserLayoutModelTest >> testSourceTop [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testStandardLayout [
 	| layout |
 	layout := model 
@@ -137,7 +139,7 @@ MicDocumentBrowserLayoutModelTest >> testStandardLayout [
 	self assert: layout children second equals: testRender 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDocumentBrowserLayoutModelTest >> testStandardLayoutWithSource [
 	| layout |
 	model showSource: true.

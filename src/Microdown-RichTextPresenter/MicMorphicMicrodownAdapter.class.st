@@ -2,12 +2,14 @@
 A morphic adapter for `MicrodownPresenter`
 "
 Class {
-	#name : #MicMorphicMicrodownAdapter,
-	#superclass : #MicMorphicTextAdapter,
-	#category : #'Microdown-RichTextPresenter-Adapters'
+	#name : 'MicMorphicMicrodownAdapter',
+	#superclass : 'MicMorphicTextAdapter',
+	#category : 'Microdown-RichTextPresenter-Adapters',
+	#package : 'Microdown-RichTextPresenter',
+	#tag : 'Adapters'
 }
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicMorphicMicrodownAdapter >> buildWidget [
 	| newWidget |
 
@@ -20,13 +22,13 @@ MicMorphicMicrodownAdapter >> buildWidget [
 	^ newWidget
 ]
 
-{ #category : #composing }
+{ #category : 'composing' }
 MicMorphicMicrodownAdapter >> compose [
 
 	self widgetDo: [ :w | self composeOn: w ]
 ]
 
-{ #category : #composing }
+{ #category : 'composing' }
 MicMorphicMicrodownAdapter >> composeOn: aWidget [
 
 	self presenter document ifNil: [ ^ self ].

@@ -10,24 +10,26 @@ I keep
 Document and source is set lazily.
 "
 Class {
-	#name : #MicDocumentBrowserModel,
-	#superclass : #Model,
+	#name : 'MicDocumentBrowserModel',
+	#superclass : 'Model',
 	#instVars : [
 		'document',
 		'source',
 		'isDirty',
 		'resourceReference'
 	],
-	#category : #'NewTools-DocumentBrowser-GUI'
+	#category : 'NewTools-DocumentBrowser-GUI',
+	#package : 'NewTools-DocumentBrowser',
+	#tag : 'GUI'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> canSave [
 	resourceReference ifNil: [ ^ false ].
 	^ resourceReference canSave
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> document [
 	resourceReference ifNil: [ ^ nil ].
 	document ifNotNil: [ ^ document ].
@@ -38,24 +40,24 @@ MicDocumentBrowserModel >> document [
 	^ document 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentBrowserModel >> initialize [
 	isDirty := false.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> isDirty [
 
 	^ isDirty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> resourceReference [
 
 	^ resourceReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> resourceReference: ref [
 	"I set the document and source of the argument"
 	resourceReference := ref.
@@ -64,7 +66,7 @@ MicDocumentBrowserModel >> resourceReference: ref [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicDocumentBrowserModel >> save [
 	"store the source into resourceReference. Do nothing if not dirty or if not canSave"
 	(isDirty and: [ self canSave ]) ifFalse: [ ^ self ].
@@ -74,7 +76,7 @@ MicDocumentBrowserModel >> save [
 	isDirty := false.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> source [
 	resourceReference ifNil: [ ^ nil ].
 	source ifNotNil: [ ^ source ].
@@ -84,7 +86,7 @@ MicDocumentBrowserModel >> source [
 	^ source 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentBrowserModel >> source: markupString [
 	"Assumes we can save"
 	self canSave ifFalse: [ ^ self ].

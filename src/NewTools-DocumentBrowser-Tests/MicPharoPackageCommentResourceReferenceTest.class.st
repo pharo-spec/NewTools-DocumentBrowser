@@ -1,25 +1,27 @@
 Class {
-	#name : #MicPharoPackageCommentResourceReferenceTest,
-	#superclass : #TestCase,
+	#name : 'MicPharoPackageCommentResourceReferenceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'savedComment'
 	],
-	#category : #'NewTools-DocumentBrowser-Tests-ResourceModel'
+	#category : 'NewTools-DocumentBrowser-Tests-ResourceModel',
+	#package : 'NewTools-DocumentBrowser-Tests',
+	#tag : 'ResourceModel'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicPharoPackageCommentResourceReferenceTest >> setUp [
 	super setUp.
 	savedComment := self class package packageComment.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicPharoPackageCommentResourceReferenceTest >> tearDown [ 
 	self class package packageComment: savedComment.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testContents [
 	| ref |
 	ref := 'comment://package/Microdown' asMicResourceReference.
@@ -28,7 +30,7 @@ MicPharoPackageCommentResourceReferenceTest >> testContents [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testIsPackage [
 	self assert: 'comment://package/Microdown' asMicResourceReference isPackage.
 	self assert: 'comment://package/Microdown-RichTextComposer' asMicResourceReference isPackage.
@@ -38,7 +40,7 @@ MicPharoPackageCommentResourceReferenceTest >> testIsPackage [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testIsTag [
 
 	self deny: 'comment://package/Microdown' asMicResourceReference isTag.
@@ -47,7 +49,7 @@ MicPharoPackageCommentResourceReferenceTest >> testIsTag [
 	self deny: 'comment://package/Calypso-SystemPlugins-ClassScripts' asMicResourceReference isTag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testKind [
 
 	self assert: 'comment://package/Microdown*' asMicResourceReference kind equals: #prefix.
@@ -56,7 +58,7 @@ MicPharoPackageCommentResourceReferenceTest >> testKind [
 	self assert: 'comment://package/Microdown-RichTextComposer?tag=Table-Support' asMicResourceReference kind equals: #tag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 	| ref dir |
 	ref := 'comment://package/Microdown' asMicResourceReference.
@@ -66,7 +68,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 	self assert: (dir first uri segments first beginsWith: 'Microdown')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 
 	| dir prefixes |
@@ -78,7 +80,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 	self assert: (prefixes noneSatisfy: [ :prefix | prefix includes: $- ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 
 	| ref dir |
@@ -91,7 +93,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 	self assert: (dir allSatisfy: [ :r | r kind = #tag ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 
 	| dir |
@@ -101,7 +103,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	self assertCollection: (dir collect: [ :ref | ref tagName ]) hasSameElements: #( 'BlockModel' 'Deprecated' 'GUI' 'ResourceModel' )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_withTag [
 
 	| ref dir |
@@ -112,7 +114,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_withTag [
 	self assert: (dir anySatisfy: [ :aRef | aRef uri segments first = self class name ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testNewFromUri [
 	| ref |
 	ref := 'comment://package/Microdown' asMicResourceReference.
@@ -120,7 +122,7 @@ MicPharoPackageCommentResourceReferenceTest >> testNewFromUri [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testPackageCommentWrite [
 	| ref myName |
 	myName := self class package name.
@@ -129,13 +131,13 @@ MicPharoPackageCommentResourceReferenceTest >> testPackageCommentWrite [
 	self assert: self class package packageComment equals: 'Writing to comment'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testPackageComment_NotThere [
 	 self assert: 'comment://package/Microdownnnnn' asMicResourceReference contents equals: ''
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testPackageName [
 
 	| ref |
@@ -143,7 +145,7 @@ MicPharoPackageCommentResourceReferenceTest >> testPackageName [
 	self assert: ref packageName equals: 'Microdown'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testPackageNameWithTag [
 
 	| ref |
@@ -152,7 +154,7 @@ MicPharoPackageCommentResourceReferenceTest >> testPackageNameWithTag [
 	self assert: ref tagName equals: 'Core'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testReducePackageNameToLevel [
 	 | dummy |
 	dummy := MicPharoPackageCommentResourceReference new.
@@ -162,7 +164,7 @@ MicPharoPackageCommentResourceReferenceTest >> testReducePackageNameToLevel [
 	self assert: (dummy reducePackageName: 'aaa-bbb-ccc' toLevel: 2) equals: 'aaa-bbb-ccc'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoPackageCommentResourceReferenceTest >> testSetup [
 
 	| ref |

@@ -1,6 +1,6 @@
-Extension { #name : #MicHeaderBlock }
+Extension { #name : 'MicHeaderBlock' }
 
-{ #category : #'*NewTools-DocumentBrowser' }
+{ #category : '*NewTools-DocumentBrowser' }
 MicHeaderBlock >> isHeader [
 	^ true
 ]
