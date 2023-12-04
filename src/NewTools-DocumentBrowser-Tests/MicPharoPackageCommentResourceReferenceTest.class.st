@@ -84,11 +84,13 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 
 	| ref dir |
-	ref := 'comment://package/Microdown?kind=package' asMicResourceReference.
+	ref := 'comment://package/Microdown?kind=package'
+		       asMicResourceReference.
 	dir := ref loadChildren.
 	"Expect Extension and Manifest tags removed"
-	self assert: dir size equals: 'Microdown' asPackage classTags size - 2.
-	self assert: (dir allSatisfy: [ :r | r class = MicPharoPackageCommentResourceReference ]).
+	self assert: dir size equals: 'Microdown' asPackage tags size - 2.
+	self assert: (dir allSatisfy: [ :r |
+			 r class = MicPharoPackageCommentResourceReference ]).
 	self assert: (dir allSatisfy: [ :r | r packageName = 'Microdown' ]).
 	self assert: (dir allSatisfy: [ :r | r kind = #tag ])
 ]

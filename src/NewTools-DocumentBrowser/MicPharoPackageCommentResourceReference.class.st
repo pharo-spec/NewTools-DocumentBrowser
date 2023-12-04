@@ -79,8 +79,11 @@ MicPharoPackageCommentResourceReference >> childrenOfPackage [
 	"I assume I am a package, return my tags"
 
 	| tags |
-	tags := self package classTags reject: [ :tag | #( Manifest Extensions ) includes: tag name ].
-	^ (tags asArray sorted: #name ascending) collect: [ :tag | ('comment://package/' , self packageName , '?tag=' , tag name) asMicResourceReference ]
+	tags := self package tags reject: [ :tag |
+		        #( Manifest Extensions ) includes: tag name ].
+	^ (tags asArray sorted: #name ascending) collect: [ :tag |
+		  ('comment://package/' , self packageName , '?tag=' , tag name)
+			  asMicResourceReference ]
 ]
 
 { #category : 'accessing' }
@@ -98,9 +101,12 @@ MicPharoPackageCommentResourceReference >> childrenOfPackagePrefix [
 MicPharoPackageCommentResourceReference >> childrenOfPackageWithTag [
 	"In case I matche a package tag, children are the classes under that tag"
 
-	^ ((self packageOrganizer packageNamed: self packageName ifAbsent: [ ^ #(  ) ])
-		classTagNamed: self tagName ifAbsent: [ ^ #(  ) ]) classes
-			collect: [ :class | ('comment://class/' , class name) asMicResourceReference ]
+	^ ((self packageOrganizer
+		    packageNamed: self packageName
+		    ifAbsent: [ ^ #(  ) ])
+		   tagNamed: self tagName
+		   ifAbsent: [ ^ #(  ) ]) classes collect: [ :class |
+		  ('comment://class/' , class name) asMicResourceReference ]
 ]
 
 { #category : 'accessing' }
