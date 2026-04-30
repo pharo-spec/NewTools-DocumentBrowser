@@ -4,5 +4,5 @@ Extension { #name : 'Text' }
 Text >> inspectionRichText: aBuilder [
 	<inspectorPresentationOrder: -1 title: 'RichText'>
 
-	^ (aBuilder initialize: MicTextPresenter) text: self
+	^ (aBuilder instantiate: MicTextPresenter) text: self
 ]
