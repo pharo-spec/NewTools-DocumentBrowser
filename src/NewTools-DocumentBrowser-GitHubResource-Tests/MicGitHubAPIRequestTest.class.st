@@ -14,3 +14,16 @@ MicGitHubAPIRequestTest >> testExtractRateInfoToleratesMissingRateLimitHeaders [
 
 	self shouldnt: [ api extractRateInfo: response ] raise: KeyNotFound
 ]
+
+{ #category : 'tests' }
+MicGitHubAPIRequestTest >> testNewApiDoesNotAuthenticateRequests [
+
+	| api request |
+	api := MicGitHubAPI new.
+	api credentials: (IceTokenCredentials new
+			 token: 'irrelevant';
+			 yourself).
+	request := (api newRequestTo: 'repos/pharo-project/pharo') request.
+
+	self deny: (request headers includesKey: 'Authorization')
+]

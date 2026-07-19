@@ -83,3 +83,10 @@ MicGitHubAPI >> handleUnauthorized: response [
 	self extractRateInfo: response.
 	super handleUnauthorized: response.
 ]
+
+{ #category : 'initialization' }
+MicGitHubAPI >> initialize [
+
+	super initialize.
+	self beAnonymous
+]
