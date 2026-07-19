@@ -58,10 +58,13 @@ MicGitHubAPI >> defaultBranch: user project: project [
 
 { #category : 'private' }
 MicGitHubAPI >> extractRateInfo: response [
-	| unixTime |
-	APICount := (response headers at: 'X-Ratelimit-Remaining') asNumber.
-	unixTime := (response headers at: 'X-Ratelimit-Reset') asNumber.
-	NextReset := DateAndTime fromUnixTime: unixTime.
+
+	| headers remainingRequests resetTime |
+	headers := response headers.
+	remainingRequests := headers at: 'X-Ratelimit-Remaining' ifAbsent: [ ^ response ].
+	resetTime := headers at: 'X-Ratelimit-Reset' ifAbsent: [ ^ response ].
+	APICount := remainingRequests asNumber.
+	NextReset := DateAndTime fromUnixTime: resetTime asNumber.
 	^ response
 ]
 
