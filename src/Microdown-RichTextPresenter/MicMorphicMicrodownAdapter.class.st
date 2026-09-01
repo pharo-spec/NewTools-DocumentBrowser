@@ -36,3 +36,9 @@ MicMorphicMicrodownAdapter >> composeOn: aWidget [
 		textStyler: self presenter textStyler;
 		asRichText: self presenter document)
 ]
+
+{ #category : 'accessing' }
+MicMorphicMicrodownAdapter >> interactionModel [
+ 
+	^ self
+]
